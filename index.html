@@ -5,11 +5,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
         <script defer type="module" src="test.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-        <link rel="stylesheet" href="style.css">
+        <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+        <link defer rel="stylesheet" href="style.css">
     </head>
 
     <body>
         <div id="testAffichage"></div>
+ <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+  <a href="#" class="pagination-previous">Previous</a>
+  <a href="#" class="pagination-next">Next page</a>
+  <ul class="pagination-list">
+    <li><a href="#" class="pagination-link" aria-label="Goto page 1">1</a></li>
+    <li><span class="pagination-ellipsis">&hellip;</span></li>
+    <li><a href="#" class="pagination-link" aria-label="Goto page 45">45</a></li>
+    <li>
+      <a
+        class="pagination-link is-current"
+        aria-label="Page 46"
+        aria-current="page"
+        >46</a
+      >
+    </li>
+    <li><a href="#" class="pagination-link" aria-label="Goto page 47">47</a></li>
+    <li><span class="pagination-ellipsis">&hellip;</span></li>
+    <li><a href="#" class="pagination-link" aria-label="Goto page 86">86</a></li>
+  </ul>
+</nav>
     </body>
 </html>

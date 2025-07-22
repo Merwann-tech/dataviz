@@ -19,7 +19,7 @@ async function showHomePage(filmData) {
 
   const img = document.createElement('img');
   img.src = await urlImage(filmData.results[i].poster_path);
-  img.width = 250
+  // img.width = 250
   img.alt = 'afficheFilm';
   img.className = "imageFilm"
 
@@ -63,5 +63,5 @@ async function trendingMovies(page){
   return FILMS
 }
 
-showHomePage(await trendingMovies(1))
+showHomePage(await trendingMovies(4))
 
