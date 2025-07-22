@@ -8,33 +8,25 @@ const options = {
 
 const TESTAFFICHAGE = document.getElementById('testAffichage')
 
-async function afficherAffiche() {
-  try {
-
-    const RESPONSE = await fetch('https://api.themoviedb.org/3/movie/552524?language=fr-FR', options)
-    const FILMS = await RESPONSE.json()
-
-    afficheImage(FILMS)
-
-  } catch (error) {
-    TESTAFFICHAGE.innerHTML = "Désolé, nous n'avons pas pu charger l'affiche du film"
-    console.error(error)
-  }
-}
-
 async function afficheImage(id) {
-  TESTAFFICHAGE.innerHTML = `<img src="${await urlImage(id)}" alt="afficheFilm">`
-
-  
+  TESTAFFICHAGE.innerHTML = `<img src="${await urlImage(id)}" alt="afficheFilm">` 
+  TESTAFFICHAGE.innerHTML += `<p>${await urlTitle(id)}</p>`
 }
 
 async function urlImage(id) {
   const RESPONSE = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
   const FILMS = await RESPONSE.json()
-  console.log(FILMS)
   let image = `https://image.tmdb.org/t/p/original${FILMS.poster_path}`
   return image
 }
+
+
+async function urlTitle(id){
+  const RESPONSE = await fetch (`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
+  const FILMS = await RESPONSE.json()
+  return FILMS.title
+}
+
 afficheImage(500)
 
 
@@ -50,3 +42,19 @@ afficheImage(500)
 //   .then(res => console.log(res))
 //   .then(TESTAFFICHAGE.innerHTML = `<img src="https://image.tmdb.org/t/p/original${res.poster_path}" alt="afficheFilm">`)
 //   .catch(err => console.error(err));
+
+
+
+// async function afficherAffiche() {
+//   try {
+
+//     const RESPONSE = await fetch('https://api.themoviedb.org/3/movie/552524?language=fr-FR', options)
+//     const FILMS = await RESPONSE.json()
+
+//     afficheImage(FILMS)
+
+//   } catch (error) {
+//     TESTAFFICHAGE.innerHTML = "Désolé, nous n'avons pas pu charger l'affiche du film"
+//     console.error(error)
+//   }
+// }
