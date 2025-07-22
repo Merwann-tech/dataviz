@@ -1,58 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anime.js HELLO WORLD</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #111;
-      color: white;
-      font-size: 2rem;
-    }
-    h2 span {
-      display: inline-block;
-      margin: 0 0.1em;
-    }
-  </style>
-</head>
-<body>
-  <h2>
-    <span>H</span>
-    <span>E</span>
-    <span>L</span>
-    <span>L</span>
-    <span>O</span>
-    <span>&nbsp;</span>
-    <span>W</span>
-    <span>O</span>
-    <span>R</span>
-    <span>L</span>
-    <span>D</span>
-  </h2>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script defer type="module" src="test.js"></script>
+    </head>
 
-  <script type="module">
-    import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
-
-    anime({
-      targets: 'h2 span',
-      translateY: [
-        { value: '-2.75rem', easing: 'easeOutExpo', duration: 600 },
-        { value: 0, easing: 'easeOutBounce', duration: 800, delay: 100 }
-      ],
-      rotate: {
-        value: '-1turn',
-        delay: 0
-      },
-      delay: (_, i) => i * 50,
-      easing: 'easeInOutCirc',
-      loop: true,
-    });
-  </script>
-</body>
+    <body>
+        <div id="testAffichage"></div>
+    </body>
 </html>
