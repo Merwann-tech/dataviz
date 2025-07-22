@@ -11,7 +11,11 @@ const TESTAFFICHAGE = document.getElementById('testAffichage')
 async function showHomePage(filmData) {
   for(let i=0;i<filmData.results.length;i++){
   const container = document.createElement('div');
-  container.className = "divFilm"
+  container.className = "card"
+
+  const cardImage = document.createElement('div');
+  cardImage.className= "card-image"
+
 
   const img = document.createElement('img');
   img.src = await urlImage(filmData.results[i].poster_path);
@@ -19,20 +23,29 @@ async function showHomePage(filmData) {
   img.alt = 'afficheFilm';
   img.className = "imageFilm"
 
+  cardImage.appendChild(img);
+
+  const cardHeader = document.createElement('div');
+  cardHeader.className = "card-content"
+
 
   const title = document.createElement('p');
-  title.className = "titreFilm"
+  title.className = "media-content"
   title.textContent = filmData.results[i].title;
 
-  container.appendChild(img);
-  container.appendChild(title);
+  cardHeader.appendChild(title);
+
+
+  container.appendChild(cardImage);
+  container.appendChild(cardHeader);
+  
 
   TESTAFFICHAGE.appendChild(container);
   }
 }
 
 async function urlImage(poster_path) {
-  return `https://image.tmdb.org/t/p/original${poster_path}`
+  return `https://image.tmdb.org/t/p/w500${poster_path}`
 }
 
 
@@ -44,10 +57,11 @@ async function infoFilm(id) {
 
 
 
-async function trendingMovies(){
-  const RESPONSE = await fetch (`https://api.themoviedb.org/3/trending/movie/day?language=fr-FR`, options)
+async function trendingMovies(page){
+  const RESPONSE = await fetch (`https://api.themoviedb.org/3/trending/movie/day?language=fr-FR&page=${page}`, options)
   const FILMS = await RESPONSE.json()
   return FILMS
 }
-showHomePage(await trendingMovies())
+
+showHomePage(await trendingMovies(1))
 
