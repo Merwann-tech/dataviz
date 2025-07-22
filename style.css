@@ -9,4 +9,12 @@
     max-width: 100vw;
 }
 
+.card{
+    margin-bottom: 24px;
+}
+
+.pagination-list{
+    justify-content: center;
+}
+
 

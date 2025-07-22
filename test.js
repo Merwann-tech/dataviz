@@ -7,6 +7,8 @@ const options = {
 }
 
 const TESTAFFICHAGE = document.getElementById('testAffichage')
+const PREVIOUSBUTTON = document.getElementById('previousButton') // pour aller à la page d'avant
+const NEXTBUTTON = document.getElementById('nextButton') // pour aller à la page d'après
 
 async function showHomePage(filmData) {
   for(let i=0;i<filmData.results.length;i++){
@@ -65,3 +67,5 @@ async function trendingMovies(page){
 
 showHomePage(await trendingMovies(4))
 
+//------------------------------------------------------------------------------------------------------------------------------------
+// on doit ajouter des addEventListener('click', *fonction*) sur les boutons previews et next
