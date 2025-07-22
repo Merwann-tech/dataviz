@@ -9,8 +9,23 @@ const options = {
 const TESTAFFICHAGE = document.getElementById('testAffichage')
 
 async function afficheImage(id) {
-  TESTAFFICHAGE.innerHTML = `<img src="${await urlImage(id)}" alt="afficheFilm">` 
-  TESTAFFICHAGE.innerHTML += `<p>${await urlTitle(id)}</p>`
+  const container = document.createElement('div');
+  container.className = "divFilm"
+
+  const img = document.createElement('img');
+  img.src = await urlImage(id);
+  img.width = 250
+  img.alt = 'afficheFilm';
+  img.className = "imageFilm"
+
+  const title = document.createElement('p');
+  title.className = "titreFilm"
+  title.textContent = await urlTitle(id);
+
+  container.appendChild(img);
+  container.appendChild(title);
+
+  TESTAFFICHAGE.appendChild(container);
 }
 
 async function urlImage(id) {
@@ -28,6 +43,8 @@ async function urlTitle(id){
 }
 
 afficheImage(500)
+
+afficheImage(620)
 
 
 
