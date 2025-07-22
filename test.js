@@ -8,25 +8,35 @@ const options = {
 
 const TESTAFFICHAGE = document.getElementById('testAffichage')
 
-async function afficherAffiche(){
-  try{
+async function afficherAffiche() {
+  try {
 
     const RESPONSE = await fetch('https://api.themoviedb.org/3/movie/552524?language=fr-FR', options)
     const FILMS = await RESPONSE.json()
 
     afficheImage(FILMS)
-  
-  } catch(error){
+
+  } catch (error) {
     TESTAFFICHAGE.innerHTML = "Désolé, nous n'avons pas pu charger l'affiche du film"
     console.error(error)
   }
 }
 
-function afficheImage(film){
-  TESTAFFICHAGE.innerHTML=`<img src="https://image.tmdb.org/t/p/w154${film.poster_path}" alt="afficheFilm">`
+async function afficheImage(id) {
+  TESTAFFICHAGE.innerHTML = `<img src="${await urlImage(id)}" alt="afficheFilm">`
+
+  
 }
 
-afficherAffiche()
+async function urlImage(id) {
+  const RESPONSE = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
+  const FILMS = await RESPONSE.json()
+  console.log(FILMS)
+  let image = `https://image.tmdb.org/t/p/original${FILMS.poster_path}`
+  return image
+}
+afficheImage(500)
+
 
 
 //----------------------------------------------------------------------------------------------------------------------------------------
