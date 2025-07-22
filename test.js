@@ -8,7 +8,7 @@ const options = {
 
 const TESTAFFICHAGE = document.getElementById('testAffichage')
 
-async function afficheImage(id) {
+async function showHomePage(id){
   const container = document.createElement('div');
   container.className = "divFilm"
 
@@ -31,22 +31,63 @@ async function afficheImage(id) {
 async function urlImage(id) {
   const RESPONSE = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
   const FILMS = await RESPONSE.json()
-  let image = `https://image.tmdb.org/t/p/original${FILMS.poster_path}`
-  return image
+  return `https://image.tmdb.org/t/p/original${FILMS.poster_path}`
 }
 
-
+// On récupère le titre
 async function urlTitle(id){
   const RESPONSE = await fetch (`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
   const FILMS = await RESPONSE.json()
   return FILMS.title
 }
 
-afficheImage(500)
+//On récupère la description
+async function  urlDescription(id){
+  const RESPONSE = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
+  const FILMS = await RESPONSE.json()
+  return FILMS.overview
+}
 
-afficheImage(620)
+//On récupère le genre
+async function  urlGenres(id){
+  const RESPONSE = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
+  const FILMS = await RESPONSE.json()
+  return FILMS.genres[0].name // tableau
+}
 
+//On récupère la date de sortie
+async function  urlReleaseDate(id){
+  const RESPONSE = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
+  const FILMS = await RESPONSE.json()
+  return FILMS.release_date
+}
 
+//On récupère la durée du film
+async function  urlRuntime(id){
+  const RESPONSE = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
+  const FILMS = await RESPONSE.json()
+  return FILMS.runtime
+}
+
+//On récupère la note donnée au film par les utilisateurs 
+async function  urlNote(id){
+  const RESPONSE = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, options)
+  const FILMS = await RESPONSE.json()
+  return FILMS.vote_average
+}
+
+showHomePage(629)
+showHomePage(620)
+
+async function test(){
+  console.log(await urlDescription(629))
+  console.log(await urlGenres(629))
+  console.log(await urlReleaseDate(629))
+  console.log(await urlRuntime(629))
+  console.log(await urlNote(629))
+}
+
+test()
 
 //----------------------------------------------------------------------------------------------------------------------------------------
 // fetch('https://api.themoviedb.org/3/trending/movie/day?language=fr-FR', options)
