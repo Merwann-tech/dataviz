@@ -8,6 +8,8 @@
   max-width: 100vw;
 }
 
+
+
 .card {
   margin-bottom: 24px;
 }
@@ -18,22 +20,10 @@
 
 header {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 80px;
+  left: auto;
 }
 
-header img {
-  border-radius: 1cm;
-}
-
-#imgfilm1 {
+.header-image{
   width: 350px ;
   height: 525px ;
 }
-
-#imgfilm3 {
-  width: 350px ;
-  height: 525px ;
-}
-
