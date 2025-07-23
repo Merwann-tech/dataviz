@@ -11,6 +11,8 @@ const TESTAFFICHAGE = document.getElementById('testAffichage')
 const PREVIOUSBUTTON = document.getElementById('previousButton') // pour aller à la page d'avant
 const NEXTBUTTON = document.getElementById('nextButton') // pour aller à la page d'après
 const CURRENTPAGE = document.getElementById('currentPage')
+const Page1 = document.getElementById('Page1')
+const maxPage = document.getElementById('maxPage')
 let page = 1
 let totalPages = 100
 
@@ -120,4 +122,18 @@ PREVIOUSBUTTON.addEventListener("click", async () => {
     showHomePage(dataPage)
     CURRENTPAGE.innerText=page
   }
+})
+
+Page1.addEventListener("click", async () => {
+    page = 1
+    let dataPage = await trendingMovies(page)
+    showHomePage(dataPage)
+    CURRENTPAGE.innerText=page
+})
+
+maxPage.addEventListener("click", async () => {
+    page = totalPages
+    let dataPage = await trendingMovies(page)
+    showHomePage(dataPage)
+    CURRENTPAGE.innerText=page
 })
