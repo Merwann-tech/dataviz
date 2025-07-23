@@ -11,7 +11,7 @@ anime({
 anime({
     targets: '#imgfilm3',
     translateX: ['0rem', 0, 33, 33, 0, 0],
-    scale: [.7, .7, .7, .7, .7, .7],
+    scale: [1, 1, 1, 1, 1, 1],
     duration: 3000,
     // loop: true,
 });
@@ -19,7 +19,7 @@ anime({
 anime({
     targets: '#imgfilm1',
     translateX: ['0rem', 0, 33, 33, 0, 0],
-    scale: [.7, .7, 1, 1, .7, .7],
+    scale: [1, 1, 1.5, 1.5, 1, 1],
     duration: 3000,
     // loop: true,
 });

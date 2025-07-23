@@ -18,7 +18,22 @@
 
 header {
   display: flex;
-  display: inline-block;
   justify-content: center;
   align-items: center;
+  gap: 80px;
 }
+
+header img {
+  border-radius: 1cm;
+}
+
+#imgfilm1 {
+  width: 350px ;
+  height: 525px ;
+}
+
+#imgfilm3 {
+  width: 350px ;
+  height: 525px ;
+}
+
