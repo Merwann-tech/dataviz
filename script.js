@@ -5,7 +5,8 @@ const options = {
     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWZkMWUyNTE0OTgzYWVkODc4N2Y0ZThlN2IwZGFmZCIsIm5iZiI6MTc1MzEwMTU1Ni4yOTMsInN1YiI6IjY4N2UzNGY0Mjc0YjA5MWY3NjUyOGY3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Y7LqI4nVTIqGOxo4C0MOIe2kH0W9VBOa51m3P5mtd6U'
   }
 }
-
+let p = 0
+const HEADER = document.getElementById('headerMovie')
 const TESTAFFICHAGE = document.getElementById('testAffichage')
 const PREVIOUSBUTTON = document.getElementById('previousButton') // pour aller à la page d'avant
 const NEXTBUTTON = document.getElementById('nextButton') // pour aller à la page d'après
@@ -50,6 +51,22 @@ async function showHomePage(filmData) {
   }
 }
 
+async function showHomeHeader(filmData){
+  const headerDiv = document.createElement('div');
+  headerDiv.className= "header-image"
+
+  const headerImg = document.createElement('img');
+  headerImg.src = await urlImage(filmData.results[p].poster_path);
+  
+  const headerParagraph = document.createElement('p');
+  headerParagraph.className = "header-paragraph"
+  headerParagraph.src = await infoFilm(filmData.results[p].budget);
+
+  headerDiv.appendChild(headerImg);
+  headerDiv.appendChild(headerParagraph);
+  HEADER.appendChild(headerDiv);
+}
+
 async function urlImage(poster_path) {
   return `https://image.tmdb.org/t/p/w500${poster_path}`
 }
@@ -73,6 +90,7 @@ showHomePage(await trendingMovies(page))
 
 
 
+showHomeHeader(await trendingMovies(1))
 //------------------------------------------------------------------------------------------------------------------------------------
 // on doit ajouter des addEventListener('click', *fonction*) sur les boutons previews et next
 
