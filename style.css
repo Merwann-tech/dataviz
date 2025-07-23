@@ -27,6 +27,10 @@ header img {
   border-radius: 1cm;
 }
 
+#imgfilm0{
+  display: none;
+}
+
 #imgfilm1 {
   width: 350px ;
   height: 525px ;
