@@ -1,5 +1,7 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css";
-
+body{
+  margin: 3vh;
+}
 #testAffichage {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -7,8 +9,6 @@
   gap: 50px;
   max-width: 100vw;
 }
-
-
 
 .card {
   margin-bottom: 24px;
@@ -20,10 +20,42 @@
 
 header {
   display: flex;
-  left: auto;
 }
 
-.header-image{
-  width: 350px ;
-  height: 525px ;
+.header-image {
+  display: flex;
+  flex-direction: row; /* horizontal layout */
+  align-items: flex-start; /* alignement en haut */
+  gap: 20px; /* espace entre image et paragraphe */
+  margin: 20px;
+}
+
+.header-image img {
+  width: 250px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.header-paragraph {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.header-image {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+  margin: 20px;
+  width: 200vh;
+  padding: 20px;
+  border-radius: 10px;
+
+  /* Background cover settings */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: white; /* pour le texte */
 }
