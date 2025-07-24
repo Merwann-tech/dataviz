@@ -64,8 +64,9 @@ async function showHomeHeader(filmData) {
     oldHeader.classList.remove("visible");
 
     // ⏳ Attends que le fade-out soit fini (1s ici)
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 500));
     
+
     // Ensuite, on peut le supprimer du DOM
     oldHeader.remove();
   }
@@ -104,10 +105,10 @@ async function showHomeHeader(filmData) {
   // ⏱ Lancer le fade-in
   setTimeout(() => {
     headerDiv.classList.add("visible");
-  }, 50);
+  }, 200);
 }
 async function headerSlide() {
-  const filmData = await nowPlaying(1); // Charger une seule fois
+  const filmData = await upcoming(1); // Charger une seule fois
   await showHomeHeader(filmData);       // Afficher immédiatement
 
   setInterval(async () => {
@@ -116,7 +117,7 @@ async function headerSlide() {
       slide = 0;
     }
     await showHomeHeader(filmData);
-  }, 20000);
+  }, 3000);
 }
 
 async function urlImage(poster_path) {
