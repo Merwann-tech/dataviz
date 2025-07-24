@@ -31,8 +31,7 @@ header {
 }
 
 .header-image img {
-  width: 250px;
-  height: auto;
+  height: 45vh;
   object-fit: cover;
   border-radius: 8px;
 }
