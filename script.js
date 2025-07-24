@@ -57,9 +57,13 @@ async function showHomeHeader(filmData) {
 
   // Définir le background-image en cover avec une superposition
   let infoMovie = await infoFilm(filmData.results[p].id);
-  headerDiv.style.backgroundImage = `linear-gradient(to right, rgba(31,31,31,1) calc((50vw - 170px) - 340px), rgba(31,31,31,0.84) 50%, rgba(31,31,31,0.84) 100%), url('${await urlImage(
-    infoMovie.backdrop_path
-  )}')`;
+  
+  headerDiv.style.backgroundImage = `linear-gradient(to right,
+  rgba(31,31,31,0.2) 0%,
+  rgba(31,31,31,0.5) 30%,
+  rgba(31,31,31,0.84) 60%,
+  rgba(31,31,31,0.84) 100%), url('${await urlImage(infoMovie.backdrop_path)}')`;
+
   headerDiv.style.backgroundSize = "cover";
   headerDiv.style.backgroundPosition = "center";
 
@@ -69,9 +73,15 @@ async function showHomeHeader(filmData) {
 
   const headerParagraph = document.createElement("p");
   headerParagraph.className = "header-paragraph";
-  headerParagraph.innerHTML += `<strong style="font-size: 24px;">${infoMovie.title}</strong><br>`;
-  headerParagraph.innerHTML += `Budget : ${infoMovie.budget}$<br>`;
-  headerParagraph.innerHTML += `Durée : ${infoMovie.runtime} minutes<br>`;
+  headerParagraph.innerHTML += `<strong style="font-size: 40px;">${infoMovie.title}</strong><br><br>`;
+  // headerParagraph.innerHTML += `<strong style="font-size: 25px;">Budget :</strong> ${infoMovie.budget}$<br>`;
+  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
+  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0].name} / ${infoMovie.genres[1].name} <br>`;
+  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
+  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
+  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
+  
+  
 
   // Composition
   headerDiv.appendChild(headerImg);
