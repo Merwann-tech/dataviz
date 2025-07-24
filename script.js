@@ -18,11 +18,13 @@ const SELECTIONPAGE1 = document.getElementById("slectionPage1");
 const SELECTIONPAGE2 = document.getElementById("slectionPage2");
 const SELECTIONPAGE3 = document.getElementById("slectionPage3");
 const SELECTIONPAGE4 = document.getElementById("slectionPage4");
+//******************************************************************************************************************************************************* */
 let currentpage = 1;
 let currentCategorie = 1
 let totalPages = 100;
 let slide = 0;
 //******************************************************************************************************************************************************* */
+//Affichage du tableau 
 async function showHomePage(filmData) {
   TESTAFFICHAGE.innerHTML = "";
   for (let i = 0; i < filmData.results.length; i++) {
@@ -110,17 +112,19 @@ async function showHomeHeader(filmData) {
 }
 //******************************************************************************************************************************************************* */
 async function headerSlide() {
-  const filmData = await upcoming(1); // Charger une seule fois
+  let numberPage = 1
+  const filmData = await upcoming(numberPage); // Charger une seule fois
   await showHomeHeader(filmData);       // Afficher immédiatement
 
   setInterval(async () => {
-    slide++;
-    if (slide >= filmData.results.length) {
-      headerDiv.innerHTML = ""
+    if(slide == 19){
       slide = 0;
     }
+    else{
+      slide++
+    }
     await showHomeHeader(filmData);
-  }, 3000);
+  }, 10000);
 }
 //******************************************************************************************************************************************************* */
 async function urlImage(poster_path) {
