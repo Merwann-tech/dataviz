@@ -23,6 +23,7 @@ let currentpage = 1;
 let currentCategorie = 1
 let totalPages = 100;
 let slide = 0;
+let headerInterval = null;
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
@@ -118,7 +119,11 @@ async function headerSlide() {
   const filmData = await upcoming(numberPage); // Charger une seule fois l'api
   await showHomeHeader(filmData);       // Afficher immédiatement
 
-  setInterval(async () => {
+  if (headerInterval) {
+    clearInterval(headerInterval);
+  }
+
+  headerInterval = setInterval(async () => {
     if(slide == 19){
       slide = 0;
     }
@@ -126,7 +131,7 @@ async function headerSlide() {
       slide++
     }
     await showHomeHeader(filmData);
-  }, 10000);
+  }, 20000);
 }
 //******************************************************************************************************************************************************* */
 //Les fonctions pour chercher les différentes informations des api
