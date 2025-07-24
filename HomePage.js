@@ -81,7 +81,7 @@ async function showHomeHeader(filmData) {
   headerDiv.className = "header-image";
 
   let infoMovie = await infoFilm(filmData.results[slide].id);
-//Background du header est le backdrop du film, avec du style
+// Background du header est le backdrop du film, avec du style
   headerDiv.style.backgroundImage = `linear-gradient(to right,
     rgba(31,31,31,0.2) 0%,
     rgba(31,31,31,0.5) 30%,
