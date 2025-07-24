@@ -28,6 +28,12 @@ header {
   align-items: flex-start; /* alignement en haut */
   gap: 20px; /* espace entre image et paragraphe */
   margin: 20px;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.header-image.visible {
+  opacity: 1;
 }
 
 .header-image img {
