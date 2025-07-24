@@ -14,7 +14,8 @@ const NEXTBUTTON = document.getElementById("nextButton"); // pour aller à la pa
 const CURRENTPAGE = document.getElementById("currentPage");
 const Page1 = document.getElementById("Page1");
 const maxPage = document.getElementById("maxPage");
-let page = 1;
+let currentpage = 1;
+let currentCategorie = 1
 let totalPages = 100;
 
 async function showHomePage(filmData) {
@@ -100,50 +101,96 @@ async function trendingMovies(page) {
   return FILMS;
 }
 
-showHomePage(await trendingMovies(page));
+async function PopularMovies(page) {
+  const RESPONSE = await fetch(
+    `https://api.themoviedb.org/3/movie/popular?language=fr-FR&page=${page}`,
+    options
+  );
+  const FILMS = await RESPONSE.json();
+  return FILMS;
+}
+
+async function topRated(page) {
+  const RESPONSE = await fetch(
+    `https://api.themoviedb.org/3/movie/top_rated?language=fr-FR&page=${page}`,
+    options
+  );
+  const FILMS = await RESPONSE.json();
+  return FILMS;
+}
+async function nowPlaying(page) {
+  const RESPONSE = await fetch(
+    `https://api.themoviedb.org/3/movie/now_playing?language=fr-FR&page=${page}`,
+    options
+  );
+  const FILMS = await RESPONSE.json();
+  return FILMS;
+}
+async function upcoming(page) {
+  const RESPONSE = await fetch(
+    `https://api.themoviedb.org/3/movie/upcoming?language=fr-FR&page=${page}`,
+    options
+  );
+  const FILMS = await RESPONSE.json();
+  return FILMS;
+}
+
+async function homePageSelection(categorie,page){
+  if (categorie==1){
+    showHomePage(await trendingMovies(page));
+  }else if(categorie==2){
+    showHomePage(await topRated(page));
+  }else if(categorie==3){
+    showHomePage(await PopularMovies(page));
+  }else if(categorie==4){
+    showHomePage(await nowPlaying(page));
+  }
+
+}
+homePageSelection(currentCategorie,currentpage)
 
 showHomeHeader(await trendingMovies(1));
 //------------------------------------------------------------------------------------------------------------------------------------
 // on doit ajouter des addEventListener('click', *fonction*) sur les boutons previews et next
 
 NEXTBUTTON.addEventListener("click", async () => {
-  if (page < totalPages) {
-    page++;
-    let dataPage = await trendingMovies(page);
+  if (currentpage < totalPages) {
+    currentpage++;
+    let dataPage = await trendingMovies(currentpage);
     showHomePage(dataPage);
-    CURRENTPAGE.innerText = page;
+    CURRENTPAGE.innerText = currentpage;
   } else {
-    page = 1;
-    let dataPage = await trendingMovies(page);
+    currentpage = 1;
+    let dataPage = await trendingMovies(currentpage);
     showHomePage(dataPage);
-    CURRENTPAGE.innerText = page;
+    CURRENTPAGE.innerText = currentpage;
   }
 });
 
 PREVIOUSBUTTON.addEventListener("click", async () => {
-  if (page > 1) {
-    page--;
-    let dataPage = await trendingMovies(page);
+  if (currentpage > 1) {
+    currentpage--;
+    let dataPage = await trendingMovies(currentpage);
     showHomePage(dataPage);
-    CURRENTPAGE.innerText = page;
+    CURRENTPAGE.innerText = currentpage;
   } else {
-    page = totalPages;
-    let dataPage = await trendingMovies(page);
+    currentpage = totalPages;
+    let dataPage = await trendingMovies(currentpage);
     showHomePage(dataPage);
-    CURRENTPAGE.innerText = page;
+    CURRENTPAGE.innerText = currentpage;
   }
 });
 
 Page1.addEventListener("click", async () => {
-  page = 1;
-  let dataPage = await trendingMovies(page);
+  currentpage = 1;
+  let dataPage = await trendingMovies(currentpage);
   showHomePage(dataPage);
-  CURRENTPAGE.innerText = page;
+  CURRENTPAGE.innerText = currentpage;
 });
 
 maxPage.addEventListener("click", async () => {
-  page = totalPages;
-  let dataPage = await trendingMovies(page);
+  currentpage = totalPages;
+  let dataPage = await trendingMovies(currentpage);
   showHomePage(dataPage);
-  CURRENTPAGE.innerText = page;
+  CURRENTPAGE.innerText = currentpage;
 });
