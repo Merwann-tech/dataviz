@@ -14,6 +14,10 @@ const NEXTBUTTON = document.getElementById("nextButton"); // pour aller à la pa
 const CURRENTPAGE = document.getElementById("currentPage");
 const Page1 = document.getElementById("Page1");
 const maxPage = document.getElementById("maxPage");
+const slectionPage1 = document.getElementById("slectionPage1");
+const slectionPage2 = document.getElementById("slectionPage2");
+const slectionPage3 = document.getElementById("slectionPage3");
+const slectionPage4 = document.getElementById("slectionPage4");
 let currentpage = 1;
 let currentCategorie = 1
 let totalPages = 100;
@@ -166,13 +170,11 @@ showHomeHeader(await trendingMovies(1));
 NEXTBUTTON.addEventListener("click", async () => {
   if (currentpage < totalPages) {
     currentpage++;
-    let dataPage = await trendingMovies(currentpage);
-    showHomePage(dataPage);
+    homePageSelection(currentCategorie,currentpage)
     CURRENTPAGE.innerText = currentpage;
   } else {
     currentpage = 1;
-    let dataPage = await trendingMovies(currentpage);
-    showHomePage(dataPage);
+    homePageSelection(currentCategorie,currentpage)
     CURRENTPAGE.innerText = currentpage;
   }
 });
@@ -180,27 +182,56 @@ NEXTBUTTON.addEventListener("click", async () => {
 PREVIOUSBUTTON.addEventListener("click", async () => {
   if (currentpage > 1) {
     currentpage--;
-    let dataPage = await trendingMovies(currentpage);
-    showHomePage(dataPage);
+    homePageSelection(currentCategorie,currentpage)
     CURRENTPAGE.innerText = currentpage;
   } else {
     currentpage = totalPages;
-    let dataPage = await trendingMovies(currentpage);
-    showHomePage(dataPage);
+    homePageSelection(currentCategorie,currentpage)
     CURRENTPAGE.innerText = currentpage;
   }
 });
 
 Page1.addEventListener("click", async () => {
   currentpage = 1;
-  let dataPage = await trendingMovies(currentpage);
-  showHomePage(dataPage);
+  homePageSelection(currentCategorie,currentpage)
   CURRENTPAGE.innerText = currentpage;
 });
 
 maxPage.addEventListener("click", async () => {
   currentpage = totalPages;
-  let dataPage = await trendingMovies(currentpage);
-  showHomePage(dataPage);
+  homePageSelection(currentCategorie,currentpage)
   CURRENTPAGE.innerText = currentpage;
+});
+
+slectionPage1.addEventListener("click", async () => {
+    currentCategorie = 1
+    slectionPage1.setAttribute("class","button is-success is-selected")
+    slectionPage2.setAttribute("class","button")
+    slectionPage3.setAttribute("class","button")
+    slectionPage4.setAttribute("class","button")
+    homePageSelection(currentCategorie,currentpage)
+});
+slectionPage2.addEventListener("click", async () => {
+    currentCategorie = 2
+    slectionPage1.setAttribute("class","button")
+    slectionPage2.setAttribute("class","button is-link is-selected")
+    slectionPage3.setAttribute("class","button")
+    slectionPage4.setAttribute("class","button")
+    homePageSelection(currentCategorie,currentpage)
+});
+slectionPage3.addEventListener("click", async () => {
+    currentCategorie = 3
+    slectionPage1.setAttribute("class","button")
+    slectionPage2.setAttribute("class","button")
+    slectionPage3.setAttribute("class","button is-danger is-selected")
+    slectionPage4.setAttribute("class","button")
+    homePageSelection(currentCategorie,currentpage)
+});
+slectionPage4.addEventListener("click", async () => {
+    currentCategorie = 4
+    slectionPage1.setAttribute("class","button")
+    slectionPage2.setAttribute("class","button")
+    slectionPage3.setAttribute("class","button")
+    slectionPage4.setAttribute("class","button is-warning is-selected")
+    homePageSelection(currentCategorie,currentpage)
 });
