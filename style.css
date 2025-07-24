@@ -70,3 +70,12 @@ header {
   font-size: 18px;
   font-weight: 700;
 }
+
+#dataGraph{
+  display: flex;
+  max-width: 50vw;
+  max-height: 50vh;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
