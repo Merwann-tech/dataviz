@@ -8,7 +8,7 @@ const options = {
 };
 //******************************************************************************************************************************************************* */
 const HEADER = document.getElementById("headerMovie");
-const TESTAFFICHAGE = document.getElementById("testAffichage");
+const HOMEPAGE = document.getElementById("homePage");
 const PREVIOUSBUTTON = document.getElementById("previousButton"); // pour aller à la page d'avant
 const NEXTBUTTON = document.getElementById("nextButton"); // pour aller à la page d'après
 const CURRENTPAGE = document.getElementById("currentPage");
@@ -18,13 +18,15 @@ const SELECTIONPAGE1 = document.getElementById("selectionPage1");
 const SELECTIONPAGE2 = document.getElementById("selectionPage2");
 const SELECTIONPAGE3 = document.getElementById("selectionPage3");
 const SELECTIONPAGE4 = document.getElementById("selectionPage4");
+//******************************************************************************************************************************************************* */
 let currentpage = 1;
 let currentCategorie = 1
 let totalPages = 100;
 let slide = 0;
 //******************************************************************************************************************************************************* */
+//Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
-  TESTAFFICHAGE.innerHTML = "";
+  HOMEPAGE.innerHTML = "";
   for (let i = 0; i < filmData.results.length; i++) {
     const container = document.createElement("div");
     container.className = "card";
@@ -52,20 +54,21 @@ async function showHomePage(filmData) {
     container.appendChild(cardImage);
     container.appendChild(cardHeader);
 
-    TESTAFFICHAGE.appendChild(container);
+    HOMEPAGE.appendChild(container);
   }
 }
 //******************************************************************************************************************************************************* */
+//Affichage d'un slider avec affiche, détail qui fade out toutes les 20 secondes
 async function showHomeHeader(filmData) {
-  // ⛔️ Ne vide pas HEADER immédiatement
+
   const oldHeader = document.querySelector(".header-image");
 
   if (oldHeader) {
     // Supprime la classe visible pour déclencher le fade-out
     oldHeader.classList.remove("visible");
 
-    // ⏳ Attends que le fade-out soit fini (1s ici)
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // ⏳ Attends que le fade-out soit fini
+    await new Promise(resolve => setTimeout(resolve, 800));
     
 
     // Ensuite, on peut le supprimer du DOM
@@ -77,7 +80,7 @@ async function showHomeHeader(filmData) {
   headerDiv.className = "header-image";
 
   let infoMovie = await infoFilm(filmData.results[slide].id);
-
+//Background du header est le backdrop du film, avec du style
   headerDiv.style.backgroundImage = `linear-gradient(to right,
     rgba(31,31,31,0.2) 0%,
     rgba(31,31,31,0.5) 30%,
@@ -86,10 +89,10 @@ async function showHomeHeader(filmData) {
 
   headerDiv.style.backgroundSize = "cover";
   headerDiv.style.backgroundPosition = "center";
-
+//Affichage de l'image du film
   const headerImg = document.createElement("img");
   headerImg.src = await urlImage(filmData.results[slide].poster_path);
-
+//Création des détails du film dans une balise p
   const headerParagraph = document.createElement("p");
   headerParagraph.className = "header-paragraph";
   headerParagraph.innerHTML += `<strong style="font-size: 40px;">${infoMovie.title}</strong><br><br>`;
@@ -98,20 +101,21 @@ async function showHomeHeader(filmData) {
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
-
+//Le tout rentré dans le HTML
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
   HEADER.appendChild(headerDiv);
 
-  // ⏱ Lancer le fade-in
+// Lancer le fade-in
   setTimeout(() => {
     headerDiv.classList.add("visible");
-  }, 200);
+  }, 800);
 }
 //******************************************************************************************************************************************************* */
+//Fonction pour passer de slide par slide dans le header
 async function headerSlide() {
   let numberPage = 1
-  const filmData = await upcoming(numberPage); // Charger une seule fois
+  const filmData = await upcoming(numberPage); // Charger une seule fois l'api
   await showHomeHeader(filmData);       // Afficher immédiatement
 
   setInterval(async () => {
@@ -125,6 +129,7 @@ async function headerSlide() {
   }, 10000);
 }
 //******************************************************************************************************************************************************* */
+//Les fonctions pour chercher les différentes informations des api
 async function urlImage(poster_path) {
   return `https://image.tmdb.org/t/p/original${poster_path}`;
 }
@@ -181,6 +186,7 @@ async function upcoming(page) {
   return FILMS;
 }
 //******************************************************************************************************************************************************* */
+//Changement de catégorie dans la navbar 
 async function homePageSelection(categorie,page){
   if (categorie==1){
     showHomePage(await trendingMovies(page));
@@ -193,11 +199,13 @@ async function homePageSelection(categorie,page){
   }
 
 }
+//******************************************************************************************************************************************************* */
+//Appel des fonctions
 homePageSelection(currentCategorie,currentpage)
 
 headerSlide();
 //******************************************************************************************************************************************************* */
-// on doit ajouter des addEventListener('click', *fonction*) sur les boutons previews et next
+//Pagination de la page 
 
 NEXTBUTTON.addEventListener("click", async () => {
   if (currentpage < totalPages) {
