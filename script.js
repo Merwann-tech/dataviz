@@ -6,22 +6,23 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWZkMWUyNTE0OTgzYWVkODc4N2Y0ZThlN2IwZGFmZCIsIm5iZiI6MTc1MzEwMTU1Ni4yOTMsInN1YiI6IjY4N2UzNGY0Mjc0YjA5MWY3NjUyOGY3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Y7LqI4nVTIqGOxo4C0MOIe2kH0W9VBOa51m3P5mtd6U",
   },
 };
-let slide = 0;
+//******************************************************************************************************************************************************* */
 const HEADER = document.getElementById("headerMovie");
 const TESTAFFICHAGE = document.getElementById("testAffichage");
 const PREVIOUSBUTTON = document.getElementById("previousButton"); // pour aller à la page d'avant
 const NEXTBUTTON = document.getElementById("nextButton"); // pour aller à la page d'après
 const CURRENTPAGE = document.getElementById("currentPage");
-const Page1 = document.getElementById("Page1");
-const maxPage = document.getElementById("maxPage");
-const slectionPage1 = document.getElementById("slectionPage1");
-const slectionPage2 = document.getElementById("slectionPage2");
-const slectionPage3 = document.getElementById("slectionPage3");
-const slectionPage4 = document.getElementById("slectionPage4");
+const PAGE1 = document.getElementById("Page1");
+const MAXPAGE = document.getElementById("maxPage");
+const SELECTIONPAGE1 = document.getElementById("slectionPage1");
+const SELECTIONPAGE2 = document.getElementById("slectionPage2");
+const SELECTIONPAGE3 = document.getElementById("slectionPage3");
+const SELECTIONPAGE4 = document.getElementById("slectionPage4");
 let currentpage = 1;
 let currentCategorie = 1
 let totalPages = 100;
-
+let slide = 0;
+//******************************************************************************************************************************************************* */
 async function showHomePage(filmData) {
   TESTAFFICHAGE.innerHTML = "";
   for (let i = 0; i < filmData.results.length; i++) {
@@ -54,7 +55,7 @@ async function showHomePage(filmData) {
     TESTAFFICHAGE.appendChild(container);
   }
 }
-
+//******************************************************************************************************************************************************* */
 async function showHomeHeader(filmData) {
   // ⛔️ Ne vide pas HEADER immédiatement
   const oldHeader = document.querySelector(".header-image");
@@ -107,6 +108,7 @@ async function showHomeHeader(filmData) {
     headerDiv.classList.add("visible");
   }, 200);
 }
+//******************************************************************************************************************************************************* */
 async function headerSlide() {
   const filmData = await upcoming(1); // Charger une seule fois
   await showHomeHeader(filmData);       // Afficher immédiatement
@@ -114,12 +116,13 @@ async function headerSlide() {
   setInterval(async () => {
     slide++;
     if (slide >= filmData.results.length) {
+      headerDiv.innerHTML = ""
       slide = 0;
     }
     await showHomeHeader(filmData);
   }, 3000);
 }
-
+//******************************************************************************************************************************************************* */
 async function urlImage(poster_path) {
   return `https://image.tmdb.org/t/p/original${poster_path}`;
 }
@@ -175,7 +178,7 @@ async function upcoming(page) {
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
-
+//******************************************************************************************************************************************************* */
 async function homePageSelection(categorie,page){
   if (categorie==1){
     showHomePage(await trendingMovies(page));
@@ -191,7 +194,7 @@ async function homePageSelection(categorie,page){
 homePageSelection(currentCategorie,currentpage)
 
 headerSlide();
-//------------------------------------------------------------------------------------------------------------------------------------
+//******************************************************************************************************************************************************* */
 // on doit ajouter des addEventListener('click', *fonction*) sur les boutons previews et next
 
 NEXTBUTTON.addEventListener("click", async () => {
@@ -218,47 +221,47 @@ PREVIOUSBUTTON.addEventListener("click", async () => {
   }
 });
 
-Page1.addEventListener("click", async () => {
+PAGE1.addEventListener("click", async () => {
   currentpage = 1;
   homePageSelection(currentCategorie,currentpage)
   CURRENTPAGE.innerText = currentpage;
 });
 
-maxPage.addEventListener("click", async () => {
+MAXPAGE.addEventListener("click", async () => {
   currentpage = totalPages;
   homePageSelection(currentCategorie,currentpage)
   CURRENTPAGE.innerText = currentpage;
 });
 
-slectionPage1.addEventListener("click", async () => {
+SELECTIONPAGE1.addEventListener("click", async () => {
     currentCategorie = 1
-    slectionPage1.setAttribute("class","button is-success is-selected")
-    slectionPage2.setAttribute("class","button")
-    slectionPage3.setAttribute("class","button")
-    slectionPage4.setAttribute("class","button")
+    SELECTIONPAGE1.setAttribute("class","button is-success is-selected")
+    SELECTIONPAGE2.setAttribute("class","button")
+    SELECTIONPAGE3.setAttribute("class","button")
+    SELECTIONPAGE4.setAttribute("class","button")
     homePageSelection(currentCategorie,currentpage)
 });
-slectionPage2.addEventListener("click", async () => {
+SELECTIONPAGE2.addEventListener("click", async () => {
     currentCategorie = 2
-    slectionPage1.setAttribute("class","button")
-    slectionPage2.setAttribute("class","button is-link is-selected")
-    slectionPage3.setAttribute("class","button")
-    slectionPage4.setAttribute("class","button")
+    SELECTIONPAGE1.setAttribute("class","button")
+    SELECTIONPAGE2.setAttribute("class","button is-link is-selected")
+    SELECTIONPAGE3.setAttribute("class","button")
+    SELECTIONPAGE4.setAttribute("class","button")
     homePageSelection(currentCategorie,currentpage)
 });
-slectionPage3.addEventListener("click", async () => {
+SELECTIONPAGE3.addEventListener("click", async () => {
     currentCategorie = 3
-    slectionPage1.setAttribute("class","button")
-    slectionPage2.setAttribute("class","button")
-    slectionPage3.setAttribute("class","button is-danger is-selected")
-    slectionPage4.setAttribute("class","button")
+    SELECTIONPAGE1.setAttribute("class","button")
+    SELECTIONPAGE2.setAttribute("class","button")
+    SELECTIONPAGE3.setAttribute("class","button is-danger is-selected")
+    SELECTIONPAGE4.setAttribute("class","button")
     homePageSelection(currentCategorie,currentpage)
 });
-slectionPage4.addEventListener("click", async () => {
+SELECTIONPAGE4.addEventListener("click", async () => {
     currentCategorie = 4
-    slectionPage1.setAttribute("class","button")
-    slectionPage2.setAttribute("class","button")
-    slectionPage3.setAttribute("class","button")
-    slectionPage4.setAttribute("class","button is-warning is-selected")
+    SELECTIONPAGE1.setAttribute("class","button")
+    SELECTIONPAGE2.setAttribute("class","button")
+    SELECTIONPAGE3.setAttribute("class","button")
+    SELECTIONPAGE4.setAttribute("class","button is-warning is-selected")
     homePageSelection(currentCategorie,currentpage)
 });
