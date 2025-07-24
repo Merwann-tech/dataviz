@@ -6,7 +6,7 @@ const options = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWZkMWUyNTE0OTgzYWVkODc4N2Y0ZThlN2IwZGFmZCIsIm5iZiI6MTc1MzEwMTU1Ni4yOTMsInN1YiI6IjY4N2UzNGY0Mjc0YjA5MWY3NjUyOGY3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Y7LqI4nVTIqGOxo4C0MOIe2kH0W9VBOa51m3P5mtd6U",
   },
 };
-let p = 0;
+let slide = 0;
 const HEADER = document.getElementById("headerMovie");
 const TESTAFFICHAGE = document.getElementById("testAffichage");
 const PREVIOUSBUTTON = document.getElementById("previousButton"); // pour aller à la page d'avant
@@ -50,43 +50,69 @@ async function showHomePage(filmData) {
     TESTAFFICHAGE.appendChild(container);
   }
 }
-//Affichage d'un header (Détail d'un trending movie)
+
 async function showHomeHeader(filmData) {
+  // ⛔️ Ne vide pas HEADER immédiatement
+  const oldHeader = document.querySelector(".header-image");
+
+  if (oldHeader) {
+    // Supprime la classe visible pour déclencher le fade-out
+    oldHeader.classList.remove("visible");
+
+    // ⏳ Attends que le fade-out soit fini (1s ici)
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Ensuite, on peut le supprimer du DOM
+    oldHeader.remove();
+  }
+
+  // Création du nouveau header
   const headerDiv = document.createElement("div");
   headerDiv.className = "header-image";
 
-  // Définir le background-image en cover avec une superposition
-  let infoMovie = await infoFilm(filmData.results[p].id);
-  
+  let infoMovie = await infoFilm(filmData.results[slide].id);
+
   headerDiv.style.backgroundImage = `linear-gradient(to right,
-  rgba(31,31,31,0.2) 0%,
-  rgba(31,31,31,0.5) 30%,
-  rgba(31,31,31,0.84) 60%,
-  rgba(31,31,31,0.84) 100%), url('${await urlImage(infoMovie.backdrop_path)}')`;
+    rgba(31,31,31,0.2) 0%,
+    rgba(31,31,31,0.5) 30%,
+    rgba(31,31,31,0.84) 60%,
+    rgba(31,31,31,0.84) 100%), url('${await urlImage(infoMovie.backdrop_path)}')`;
 
   headerDiv.style.backgroundSize = "cover";
   headerDiv.style.backgroundPosition = "center";
 
-  // Ajout de l'affiche (poster) et du texte
   const headerImg = document.createElement("img");
-  headerImg.src = await urlImage(filmData.results[p].poster_path);
+  headerImg.src = await urlImage(filmData.results[slide].poster_path);
 
   const headerParagraph = document.createElement("p");
   headerParagraph.className = "header-paragraph";
   headerParagraph.innerHTML += `<strong style="font-size: 40px;">${infoMovie.title}</strong><br><br>`;
-  // headerParagraph.innerHTML += `<strong style="font-size: 25px;">Budget :</strong> ${infoMovie.budget}$<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0].name} / ${infoMovie.genres[1].name} <br>`;
+  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ''} / ${infoMovie.genres[1]?.name || ''} <br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
-  
-  
 
-  // Composition
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
   HEADER.appendChild(headerDiv);
+
+  // ⏱ Lancer le fade-in
+  setTimeout(() => {
+    headerDiv.classList.add("visible");
+  }, 50);
+}
+async function headerSlide() {
+  const filmData = await nowPlaying(1); // Charger une seule fois
+  await showHomeHeader(filmData);       // Afficher immédiatement
+
+  setInterval(async () => {
+    slide++;
+    if (slide >= filmData.results.length) {
+      slide = 0;
+    }
+    await showHomeHeader(filmData);
+  }, 20000);
 }
 
 async function urlImage(poster_path) {
@@ -159,7 +185,7 @@ async function homePageSelection(categorie,page){
 }
 homePageSelection(currentCategorie,currentpage)
 
-showHomeHeader(await trendingMovies(1));
+headerSlide();
 //------------------------------------------------------------------------------------------------------------------------------------
 // on doit ajouter des addEventListener('click', *fonction*) sur les boutons previews et next
 
