@@ -18,13 +18,11 @@ const SELECTIONPAGE1 = document.getElementById("slectionPage1");
 const SELECTIONPAGE2 = document.getElementById("slectionPage2");
 const SELECTIONPAGE3 = document.getElementById("slectionPage3");
 const SELECTIONPAGE4 = document.getElementById("slectionPage4");
-//******************************************************************************************************************************************************* */
 let currentpage = 1;
 let currentCategorie = 1
 let totalPages = 100;
 let slide = 0;
 //******************************************************************************************************************************************************* */
-//Affichage du tableau 
 async function showHomePage(filmData) {
   TESTAFFICHAGE.innerHTML = "";
   for (let i = 0; i < filmData.results.length; i++) {
