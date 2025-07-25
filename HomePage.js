@@ -22,7 +22,7 @@ const page = document.getElementById("Page");
 const BODY = document.getElementById("body");
 
 const TRANSITION_DURATION = 800;
-const SLIDE_INTERVAL = 10000 + TRANSITION_DURATION;
+const SLIDE_INTERVAL = 10000 + (TRANSITION_DURATION*2);
 //******************************************************************************************************************************************************* */
 let backupBody = BODY.innerHTML
 let currentpage = 1;
@@ -77,17 +77,6 @@ async function showHomeHeader(filmData) {
 
   const oldHeader = document.querySelector(".header-image");
 
-  if (oldHeader) {
-    // Supprime la classe visible pour déclencher le fade-out
-    oldHeader.classList.remove("visible");
-
-    // ⏳ Attends que le fade-out soit fini
-    await new Promise(resolve => setTimeout(resolve, TRANSITION_DURATION));
-
-
-    // Ensuite, on peut le supprimer du DOM
-    oldHeader.remove();
-  }
 
   // Création du nouveau header
   const headerDiv = document.createElement("div");
@@ -115,10 +104,25 @@ async function showHomeHeader(filmData) {
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
+  if (oldHeader) {
+    // Supprime la classe visible pour déclencher le fade-out
+    oldHeader.classList.remove("visible");
+
+    // ⏳ Attends que le fade-out soit fini
+    await new Promise(resolve => setTimeout(resolve, TRANSITION_DURATION));
+
+
+    // Ensuite, on peut le supprimer du DOM
+    oldHeader.remove();
+  }
+
+  
   //Le tout rentré dans le HTML
+
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
   HEADER.appendChild(headerDiv);
+
 
   // Lancer le fade-in
   setTimeout(() => {
