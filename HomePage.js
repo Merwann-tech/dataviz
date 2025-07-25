@@ -22,7 +22,7 @@ const page = document.getElementById("Page");
 const BODY = document.getElementById("body");
 
 const TRANSITION_DURATION = 800;
-const SLIDE_INTERVAL = 10000 + (TRANSITION_DURATION*2);
+const SLIDE_INTERVAL = 10000 + (TRANSITION_DURATION * 2);
 //******************************************************************************************************************************************************* */
 let backupBody = BODY.innerHTML
 let currentpage = 1;
@@ -81,29 +81,32 @@ async function showHomeHeader(filmData) {
   // Création du nouveau header
   const headerDiv = document.createElement("div");
   headerDiv.className = "header-image";
+  headerDiv.setAttribute("id", filmData.results[slide].id)
 
   let infoMovie = await infoFilm(filmData.results[slide].id);
-// Background du header est le backdrop du film, avec du style
+  // Background du header est le backdrop du film, avec du style
   headerDiv.style.backgroundImage = `linear-gradient(to right,
     rgba(31,31,31,0.2) 0%,
     rgba(31,31,31,0.5) 30%,
     rgba(31,31,31,0.84) 60%,
-    rgba(31,31,31,0.84) 100%), url('${await urlImage(infoMovie.backdrop_path)}')`;
+    rgba(31,31,31,0.84) 100%), url('${await urlBackdrop(infoMovie.backdrop_path)}')`;
 
   headerDiv.style.backgroundSize = "cover";
   headerDiv.style.backgroundPosition = "center";
   //Affichage de l'image du film
   const headerImg = document.createElement("img");
   headerImg.src = await urlImage(filmData.results[slide].poster_path);
+  headerImg.setAttribute("id", filmData.results[slide].id)
   //Création des détails du film dans une balise p
   const headerParagraph = document.createElement("p");
+  headerParagraph.setAttribute("id", filmData.results[slide].id)
   headerParagraph.className = "header-paragraph";
   headerParagraph.innerHTML += `<strong style="font-size: 40px;">${infoMovie.title}</strong><br><br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ''} / ${infoMovie.genres[1]?.name || ''} <br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
+  // headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
   if (oldHeader) {
     // Supprime la classe visible pour déclencher le fade-out
     oldHeader.classList.remove("visible");
@@ -116,18 +119,19 @@ async function showHomeHeader(filmData) {
     oldHeader.remove();
   }
 
-  
+
   //Le tout rentré dans le HTML
 
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
   HEADER.appendChild(headerDiv);
+  HEADER.addEventListener('click', showDetail)
 
 
   // Lancer le fade-in
   setTimeout(() => {
     headerDiv.classList.add("visible");
-  }, TRANSITION_DURATION );
+  }, TRANSITION_DURATION);
 }
 //******************************************************************************************************************************************************* */
 //Fonction pour passer de slide par slide dans le header
@@ -161,7 +165,7 @@ async function detailFilm(IdFilm) {
     rgba(31,31,31,0.2) 0%,
     rgba(31,31,31,0.5) 30%,
     rgba(31,31,31,0.84) 60%,
-    rgba(31,31,31,0.84) 100%), url('${await urlImage(infoMovie.backdrop_path)}')`;
+    rgba(31,31,31,0.84) 100%), url('${await urlBackdrop(infoMovie.backdrop_path)}')`;
 
   headerDiv.style.backgroundSize = "cover";
   headerDiv.style.backgroundPosition = "center";
@@ -176,6 +180,7 @@ async function detailFilm(IdFilm) {
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ''} / ${infoMovie.genres[1]?.name || ''} <br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
+  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Budget : </strong>${infoMovie.budget}$<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
 
   const button = document.createElement("button")
@@ -199,7 +204,11 @@ async function detailFilm(IdFilm) {
 //******************************************************************************************************************************************************* */
 //Les fonctions pour chercher les différentes informations des api
 async function urlImage(poster_path) {
-  return `https://image.tmdb.org/t/p/original${poster_path}`;
+  return `https://image.tmdb.org/t/p/w500${poster_path}`;
+}
+
+async function urlBackdrop(backdrop_path) {
+  return `https://image.tmdb.org/t/p/original${backdrop_path}`;
 }
 
 async function infoFilm(id) {
