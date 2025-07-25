@@ -1,5 +1,5 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css";
-body{
+body {
   margin: 3vh;
 }
 #homePage {
@@ -22,15 +22,7 @@ header {
   display: flex;
 }
 
-.header-image {
-  display: flex;
-  flex-direction: row; /* horizontal layout */
-  align-items: flex-start; /* alignement en haut */
-  gap: 20px; /* espace entre image et paragraphe */
-  margin: 20px;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
+
 
 .header-image.visible {
   opacity: 1;
@@ -58,9 +50,29 @@ header {
   padding: 20px;
   border-radius: 10px;
 
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+
   /* Background cover settings */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   color: white; /* pour le texte */
+}
+
+.detail {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  color: white;
+}
+
+.detail img {
+  max-width: 300px;
+  border-radius: 10px;
+}
+.detail-paragraph {
+  max-width: 600px;
 }
