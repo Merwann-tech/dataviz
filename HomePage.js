@@ -29,6 +29,7 @@ let currentpage = 1;
 let currentCategorie = 1
 let totalPages = 100;
 let slide = 0;
+let headerInterval = null;
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
@@ -93,7 +94,7 @@ async function showHomeHeader(filmData) {
   headerDiv.className = "header-image";
 
   let infoMovie = await infoFilm(filmData.results[slide].id);
-  //Background du header est le backdrop du film, avec du style
+// Background du header est le backdrop du film, avec du style
   headerDiv.style.backgroundImage = `linear-gradient(to right,
     rgba(31,31,31,0.2) 0%,
     rgba(31,31,31,0.5) 30%,
