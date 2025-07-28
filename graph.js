@@ -1,3 +1,4 @@
+//méthodo pour pouvoir utiliser la clé API
 const options = {
   method: "GET",
   headers: {
@@ -5,49 +6,68 @@ const options = {
     Authorization:
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWZkMWUyNTE0OTgzYWVkODc4N2Y0ZThlN2IwZGFmZCIsIm5iZiI6MTc1MzEwMTU1Ni4yOTMsInN1YiI6IjY4N2UzNGY0Mjc0YjA5MWY3NjUyOGY3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Y7LqI4nVTIqGOxo4C0MOIe2kH0W9VBOa51m3P5mtd6U",
   },
-};
+}
 
-// // let yearToShow = 2025 // pour vérifier qu'on est bien entrain de travailler sur la bonne année
+//*******************************************************************************************************************************************************
 
-// // On se sert des deux prochaines variables pour pouvoir stocker nos informations en fonction du mois et de la data
-// // let monthInNumber = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] // pour stocker nos résultats à chaque analyse
-// // let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"] // réferentiel des mois
+let chart // on définit une variable chart qui va contenir notre affichage ( c'est la chart qu'on va créer toutes les x secondes )
+let yearToShow = 2014 // on l'a met en variable globale car on doit pouvoir la modifier lors de notre appel du setInterval. --> démarre l'affichage en 2015
 
-// // on devra mettre en paramètre datasets.label / datasets.data et labels
-// // le label ne sera pas changé sur ce doughnut car il affichera les sorties par mois par année
+//*******************************************************************************************************************************************************
 
+//Permet de récupérer les différentes informations des pages de l'api
+async function dataFilm(yearToShow) {
 
+  const monthCounts = new Array(12).fill(0) // on créer un nouveau tableau qu'on va remplir et qu'on va renvoyer pour qu'on les utilisent dans le graph
 
-// //Version scrap, à revoir quand j'aurai réussi a d'abord faire des affichages graphiques réguliers
-// //
-// // for(let numberOfPageToAnalyse; numberOfPageToAnalyse <= 100; numberOfPageToAnalyse++){
-// //   const RESPONSE = await fetch(`https://api.themoviedb.org/3/trending/movie/day?language=fr-FR&page=${numberOfPageToAnalyse}`,options);
-// //   const DataPage = await RESPONSE.json();
-// //   // on récupère les infos de chaque page
+  for (let i = 1; i <= 50; i++) { // nombre de page a analyser
+    try {
+      const response = await fetch(`https://api.themoviedb.org/3/trending/movie/day?language=fr-FR&page=${i}`, options)
+      const data = await response.json()
 
+      if (data.results && Array.isArray(data.results)) { // on vérifie bien qu'on récupérer les informations de la page en cours et qu'on a un tableau
+        sortData(data.results, yearToShow, monthCounts) // on appelle une fonction qui va remplir le tableau en fonction du résultat
+      }
 
-// // }
+    } 
+    
+    catch (error) {
+      console.error(`Erreur sur la page ${i} :`, error) // on renvoi une erreur dans la console si jamais on a pas réussi à réc
+    }
 
-// // function releaseDateSeparated(date){
-// //   let yearSplited = date.split('-')
-
-// //   let releaseYear = yearSplited[0] // on récupère l'année de la sortie
-// //   let releaseMonth = yearSplited[1] // on récupère le mois de la sortie
-  
-  
-// // }
-
-//---------------------------------------------------------------------------------------------------------------------
-
-let chart; // on définit une variable chart qui va contenir 
-
-function randomiseData(){
-  const actualData = chart.data.datasets[0].data // ça nous rends bien les données contenues dans l'objet data
-  for(let i = 0; i < actualData.length; i++ ){
-    actualData[i] = Math.floor(Math.random() * 30)//math.floor permet de rendre un entier et math.random rends nombre entre 0 et 1 et * additionne 
   }
+
+  return monthCounts // on retourne notre tableau fini
+}
+
+function sortData(results, yearToShow, monthCounts) {
+  for (let film of results) { // on récupère la page en cours et on l'analyse ( d'ou la notion de vérifier si c'est un tableau )
+    if (!film.release_date == ""){ // on sait jamais --> on a des backdrops vide donc bon, c'est plus sur
+
+        let SplitedDate = film.release_date.split("-") // variable tampon pour séparer le string
+        
+        const year = Number(SplitedDate[0])
+        const month = Number(SplitedDate[1])
+
+        if (year === yearToShow && month >= 1 && month <= 12) {
+        monthCounts[month - 1]++
+        }
+    }
+  }
+}
+
+async function updateChartWithRealData() {
+  const monthData = await dataFilm(yearToShow)
+
+  // permet de transférer les données de notre array dans notre chart
+  for (let i = 0; i < 12; i++) {
+    chart.data.datasets[0].data[i] = monthData[i]
+  }
+  chart.options.plugins.title.text = `Sorties de films en ${yearToShow}`
   chart.update()
 }
+
+//*******************************************************************************************************************************************************
 
 //L'évenement DOMContentLoader se lance au moment ou le fichier est chargé
 document.addEventListener('DOMContentLoaded', function () {
@@ -55,10 +75,12 @@ document.addEventListener('DOMContentLoaded', function () {
     labels: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
     datasets: [{
       label: 'Nombre de sorties',
-      data: [12, 19, 5, 13, 18, 10, 4, 8, 22, 12, 4, 12],
+
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // on le fait démarrer à 0 pour qu'on ait un affichage ou il n'y a rien
+
       backgroundColor: ['#f87171', '#fb923c', '#facc15', '#4ade80', '#60a5fa', '#3339ff', '#ff33d1', '#39ff33', '#7a33ff', '#33fff3', '#d8e80b', '#8f3192'],
     }]
-  };
+  }
 
   const config = {
     type: 'doughnut',
@@ -67,20 +89,30 @@ document.addEventListener('DOMContentLoaded', function () {
       responsive: true,
       plugins: {
         legend: {
-          position: 'top',
+          position: 'bottom',
         },
-        title: {
-          display: false,
-          text: 'Chart.js Doughnut Chart'
+        title: {    
+          display: true,
+          text: 'Films sortis par mois par année'
         }
       }
     },
-  };
+  }
 
-  const INSHCAPASSE = document.getElementById('inshCaPasse');
-  chart = new Chart(INSHCAPASSE, config);
+  const DISPLAYGRAPH = document.getElementById('displayGraph')
+  chart = new Chart(DISPLAYGRAPH, config)
 
-  console.log(chart.data.datasets[0].data)
+  let interval = setInterval(() => {
+    yearToShow++
 
-  setInterval(randomiseData, 5000);
-});
+    if(yearToShow === 2025){
+        clearInterval(interval)
+        console.log("Fin de l'affichage")
+    }
+
+    updateChartWithRealData()
+  }, 11600) // pour que ça se synchronise avec avec l'effet du slider
+  
+  // permet de lancer la génération de charts différents --> pour l'instant c'est aléatoire mais a terme il faudrait que ça récupère les sorties par années
+  // fonction dataFilm, le return devra renvoyer le tableau de données a utiliser
+})

@@ -104,3 +104,12 @@ header {
   justify-content: center;
   margin: auto;
 }
+
+#displayGraph{
+  display: flex;
+  max-width: 50vw;
+  max-height: 50vh;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
