@@ -32,8 +32,8 @@ header {
 }
 
 .imageFilm {
-  width: 160px;
-  height: 230px;
+  width: auto;
+  height: auto;
   object-fit: cover;
 }
 
