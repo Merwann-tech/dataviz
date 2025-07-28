@@ -2,12 +2,26 @@
 body {
   margin: 3vh;
 }
+
+ .separationBox{
+  display: flex;
+  gap: 20px;
+ }
+
+ #homePageBox{
+  width: 70%;
+
+ }
+
 #homePage {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, 1fr);
   gap: 50px;
-  max-width: 95vw;
+}
+
+#homePageGraph{
+  width: 30%;
 }
 
 #detailDiv {
@@ -97,15 +111,6 @@ header {
 }
 
 #dataGraph {
-  display: flex;
-  max-width: 50vw;
-  max-height: 50vh;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-}
-
-#displayGraph{
   display: flex;
   max-width: 50vw;
   max-height: 50vh;
