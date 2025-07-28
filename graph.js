@@ -102,6 +102,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const DISPLAYGRAPH = document.getElementById('displayGraph')
   chart = new Chart(DISPLAYGRAPH, config)
 
+  updateChartWithRealData()
+  
   let interval = setInterval(() => {
     yearToShow++
 
