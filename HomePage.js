@@ -130,11 +130,11 @@ async function showHomeHeader(filmData) {
 
 
   //Le tout rentré dans le HTML
-
+  
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
+  headerDiv.addEventListener('click', showDetail)
   HEADER.appendChild(headerDiv);
-  HEADER.addEventListener('click', showDetail)
 
 
   // Lancer le fade-in
@@ -319,6 +319,7 @@ btnHome.addEventListener("click", async () => {
   page.style.display = "inline"
   currentCategorie = 1
   PAGE1.click()
+  SELECTIONPAGE1.setAttribute("class", "button is-success is-selected")
   homePageSelection(currentCategorie, currentpage)
 })
 
