@@ -12,6 +12,8 @@ const options = {
 
 let chart // on définit une variable chart qui va contenir notre affichage ( c'est la chart qu'on va créer toutes les x secondes )
 let yearToShow = 2014 // on l'a met en variable globale car on doit pouvoir la modifier lors de notre appel du setInterval. --> démarre l'affichage en 2015
+const CURRENTYEAR = new Date() // on récupère la date système
+const ACTUALYEAR = CURRENTYEAR.getFullYear() // on récupère l'année de la date système
 
 //*******************************************************************************************************************************************************
 
@@ -103,11 +105,11 @@ document.addEventListener('DOMContentLoaded', function () {
   chart = new Chart(DISPLAYGRAPH, config)
 
   updateChartWithRealData()
-  
+
   let interval = setInterval(() => {
     yearToShow++
 
-    if(yearToShow === 2025){
+    if(yearToShow === ACTUALYEAR){
         clearInterval(interval)
         console.log("Fin de l'affichage")
     }
