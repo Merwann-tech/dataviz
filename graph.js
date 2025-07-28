@@ -48,8 +48,8 @@ function sortData(results, yearToShow, monthCounts) {
 
         let SplitedDate = film.release_date.split("-") // variable tampon pour séparer le string
         
-        const year = Number(SplitedDate[0])
-        const month = Number(SplitedDate[1])
+        const year = Number(SplitedDate[0]) // c'est un string a la base
+        const month = Number(SplitedDate[1])  // c'est un string a la base
 
         if (year === yearToShow && month >= 1 && month <= 12) {
         monthCounts[month - 1]++
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const DISPLAYGRAPH = document.getElementById('displayGraph')
   chart = new Chart(DISPLAYGRAPH, config)
 
-  updateChartWithRealData()
+  updateChartWithRealData() // on lance la fonction une première fois pour que le graphe se charge une première fois sans que ça reste vide
 
   let interval = setInterval(() => {
     yearToShow++
@@ -116,7 +116,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateChartWithRealData()
   }, 11600) // pour que ça se synchronise avec avec l'effet du slider
-  
-  // permet de lancer la génération de charts différents --> pour l'instant c'est aléatoire mais a terme il faudrait que ça récupère les sorties par années
-  // fonction dataFilm, le return devra renvoyer le tableau de données a utiliser
 })
