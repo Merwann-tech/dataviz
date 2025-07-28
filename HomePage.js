@@ -34,45 +34,50 @@ let currentCategorie = 1
 let totalPages = 100;
 let slide = 0;
 let headerInterval = null;
+let currentInput = ""
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
   HOMEPAGE.innerHTML = "";
+  totalPages = filmData.total_pages;
+  MAXPAGE.innerText = totalPages
   for (let i = 0; i < filmData.results.length; i++) {
-    const container = document.createElement("div");
-    container.className = "card";
-    container.addEventListener('click', showDetail)
-    container.setAttribute("id", filmData.results[i].id)
+    if (filmData.results[i].poster_path != null) {
+      const container = document.createElement("div");
+      container.className = "card";
+      container.addEventListener('click', showDetail)
+      container.setAttribute("id", filmData.results[i].id)
 
-    const cardImage = document.createElement("div");
-    cardImage.className = "card-image";
-    cardImage.setAttribute("id", filmData.results[i].id)
+      const cardImage = document.createElement("div");
+      cardImage.className = "card-image";
+      cardImage.setAttribute("id", filmData.results[i].id)
 
-    const img = document.createElement("img");
-    img.src = await urlImage(filmData.results[i].poster_path);
-    // img.width = 250
-    img.alt = "afficheFilm";
-    img.className = "imageFilm";
-    img.setAttribute("id", filmData.results[i].id)
+      const img = document.createElement("img");
+      img.src = await urlImage(filmData.results[i].poster_path);
+      // img.width = 250
+      img.alt = "afficheFilm";
+      img.className = "imageFilm";
+      img.setAttribute("id", filmData.results[i].id)
 
-    cardImage.appendChild(img);
+      cardImage.appendChild(img);
 
-    const cardHeader = document.createElement("div");
-    cardHeader.className = "card-content";
-    cardHeader.setAttribute("id", filmData.results[i].id)
+      const cardHeader = document.createElement("div");
+      cardHeader.className = "card-content";
+      cardHeader.setAttribute("id", filmData.results[i].id)
 
-    const title = document.createElement("p");
-    title.className = "media-content";
-    title.textContent = filmData.results[i].title;
-    title.setAttribute("id", filmData.results[i].id)
+      const title = document.createElement("p");
+      title.className = "media-content";
+      title.textContent = filmData.results[i].title;
+      title.setAttribute("id", filmData.results[i].id)
 
-    cardHeader.appendChild(title);
-    cardHeader.setAttribute("id", filmData.results[i].id)
+      cardHeader.appendChild(title);
+      cardHeader.setAttribute("id", filmData.results[i].id)
 
-    container.appendChild(cardImage);
-    container.appendChild(cardHeader);
+      container.appendChild(cardImage);
+      container.appendChild(cardHeader);
 
-    HOMEPAGE.appendChild(container);
+      HOMEPAGE.appendChild(container);
+    }
   }
 }
 //******************************************************************************************************************************************************* */
@@ -289,10 +294,7 @@ async function homePageSelection(categorie, page) {
   } else if (categorie == 4) {
     showHomePage(await nowPlaying(page));
   } else if (categorie == 5) {
-    let input = document.getElementById("searchInput").value;
-    if (input != "") {
-      showHomePage(await search(page, input));
-    }
+    showHomePage(await search(page,currentInput));
   }
 
 }
@@ -397,8 +399,15 @@ SELECTIONPAGE4.addEventListener("click", async () => {
 });
 
 searchBtn.addEventListener("click", async () => {
-  currentCategorie = 5
-  PAGE1.click()
-  homePageSelection(currentCategorie, currentpage)
-})
+  currentInput = document.getElementById("searchInput").value;
+  if (currentInput != "") {
+    currentCategorie = 5
+    PAGE1.click()
+    homePageSelection(currentCategorie, currentpage)
+    SELECTIONPAGE1.setAttribute("class", "button")
+    SELECTIONPAGE2.setAttribute("class", "button")
+    SELECTIONPAGE3.setAttribute("class", "button")
+    SELECTIONPAGE4.setAttribute("class", "button")
+  }
+  })
 
