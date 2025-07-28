@@ -130,7 +130,7 @@ async function showHomeHeader(filmData) {
 
 
   //Le tout rentré dans le HTML
-  
+
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
   headerDiv.addEventListener('click', showDetail)
@@ -294,7 +294,7 @@ async function homePageSelection(categorie, page) {
   } else if (categorie == 4) {
     showHomePage(await nowPlaying(page));
   } else if (categorie == 5) {
-    showHomePage(await search(page,currentInput));
+    showHomePage(await search(page, currentInput));
   }
 
 }
@@ -320,6 +320,9 @@ btnHome.addEventListener("click", async () => {
   currentCategorie = 1
   PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button is-success is-selected")
+  SELECTIONPAGE2.setAttribute("class", "button")
+  SELECTIONPAGE3.setAttribute("class", "button")
+  SELECTIONPAGE4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
 })
 
@@ -410,5 +413,5 @@ searchBtn.addEventListener("click", async () => {
     SELECTIONPAGE3.setAttribute("class", "button")
     SELECTIONPAGE4.setAttribute("class", "button")
   }
-  })
+})
 
