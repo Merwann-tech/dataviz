@@ -22,6 +22,8 @@ const page = document.getElementById("Page");
 const BODY = document.getElementById("body");
 const btnHome = document.getElementById("btnHome");
 const detailDiv = document.getElementById("detailDiv");
+const searchBtn = document.getElementById("searchBtn");
+
 
 const TRANSITION_DURATION = 500;
 const SLIDE_INTERVAL = 10000 + (TRANSITION_DURATION * 2);
@@ -183,7 +185,7 @@ async function detailFilm(IdFilm) {
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Budget : </strong>${infoMovie.budget}$<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
-  
+
   const DivButton = document.createElement("div")
   DivButton.className = "buttons has-addons is-centered";
 
@@ -266,6 +268,15 @@ async function upcoming(page) {
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
+
+async function search(page, input) {
+  const RESPONSE = await fetch(
+    `https://api.themoviedb.org/3/search/movie?query=${input}&include_adult=false&language=fr-FR&page=${page}`,
+    options
+  );
+  const FILMS = await RESPONSE.json();
+  return FILMS;
+}
 //******************************************************************************************************************************************************* */
 //Changement de catégorie dans la navbar 
 async function homePageSelection(categorie, page) {
@@ -277,6 +288,11 @@ async function homePageSelection(categorie, page) {
     showHomePage(await PopularMovies(page));
   } else if (categorie == 4) {
     showHomePage(await nowPlaying(page));
+  } else if (categorie == 5) {
+    let input = document.getElementById("searchInput").value;
+    if (input != "") {
+      showHomePage(await search(page, input));
+    }
   }
 
 }
@@ -288,15 +304,20 @@ headerSlide();
 //******************************************************************************************************************************************************* */
 //Pagination de la page 
 
+
+
 function showDetail(event) {
-  console.log(event.target.id)
   detailFilm(event.target.id)
 }
 
+
+
 btnHome.addEventListener("click", async () => {
-    detailDiv.innerHTML = ""
-    page.style.display = "inline"
-    console.log("test") 
+  detailDiv.innerHTML = ""
+  page.style.display = "inline"
+  currentCategorie = 1
+  PAGE1.click()
+  homePageSelection(currentCategorie, currentpage)
 })
 
 
@@ -336,8 +357,11 @@ MAXPAGE.addEventListener("click", async () => {
   CURRENTPAGE.innerText = currentpage;
 });
 
+
+
 SELECTIONPAGE1.addEventListener("click", async () => {
   currentCategorie = 1
+  PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button is-success is-selected")
   SELECTIONPAGE2.setAttribute("class", "button")
   SELECTIONPAGE3.setAttribute("class", "button")
@@ -346,6 +370,7 @@ SELECTIONPAGE1.addEventListener("click", async () => {
 });
 SELECTIONPAGE2.addEventListener("click", async () => {
   currentCategorie = 2
+  PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button")
   SELECTIONPAGE2.setAttribute("class", "button is-link is-selected")
   SELECTIONPAGE3.setAttribute("class", "button")
@@ -354,6 +379,7 @@ SELECTIONPAGE2.addEventListener("click", async () => {
 });
 SELECTIONPAGE3.addEventListener("click", async () => {
   currentCategorie = 3
+  PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button")
   SELECTIONPAGE2.setAttribute("class", "button")
   SELECTIONPAGE3.setAttribute("class", "button is-danger is-selected")
@@ -362,6 +388,7 @@ SELECTIONPAGE3.addEventListener("click", async () => {
 });
 SELECTIONPAGE4.addEventListener("click", async () => {
   currentCategorie = 4
+  PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button")
   SELECTIONPAGE2.setAttribute("class", "button")
   SELECTIONPAGE3.setAttribute("class", "button")
@@ -369,4 +396,9 @@ SELECTIONPAGE4.addEventListener("click", async () => {
   homePageSelection(currentCategorie, currentpage)
 });
 
+searchBtn.addEventListener("click", async () => {
+  currentCategorie = 5
+  PAGE1.click()
+  homePageSelection(currentCategorie, currentpage)
+})
 
