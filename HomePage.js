@@ -22,6 +22,8 @@ const page = document.getElementById("Page");
 const BODY = document.getElementById("body");
 const btnHome = document.getElementById("btnHome");
 const detailDiv = document.getElementById("detailDiv");
+const searchBtn = document.getElementById("searchBtn");
+
 
 const TRANSITION_DURATION = 500;
 const SLIDE_INTERVAL = 10000 + (TRANSITION_DURATION * 2);
@@ -32,45 +34,50 @@ let currentCategorie = 1
 let totalPages = 100;
 let slide = 0;
 let headerInterval = null;
+let currentInput = ""
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
   HOMEPAGE.innerHTML = "";
+  totalPages = filmData.total_pages;
+  MAXPAGE.innerText = totalPages
   for (let i = 0; i < filmData.results.length; i++) {
-    const container = document.createElement("div");
-    container.className = "card";
-    container.addEventListener('click', showDetail)
-    container.setAttribute("id", filmData.results[i].id)
+    if (filmData.results[i].poster_path != null) {
+      const container = document.createElement("div");
+      container.className = "card";
+      container.addEventListener('click', showDetail)
+      container.setAttribute("id", filmData.results[i].id)
 
-    const cardImage = document.createElement("div");
-    cardImage.className = "card-image";
-    cardImage.setAttribute("id", filmData.results[i].id)
+      const cardImage = document.createElement("div");
+      cardImage.className = "card-image";
+      cardImage.setAttribute("id", filmData.results[i].id)
 
-    const img = document.createElement("img");
-    img.src = await urlImage(filmData.results[i].poster_path);
-    // img.width = 250
-    img.alt = "afficheFilm";
-    img.className = "imageFilm";
-    img.setAttribute("id", filmData.results[i].id)
+      const img = document.createElement("img");
+      img.src = await urlImage(filmData.results[i].poster_path);
+      // img.width = 250
+      img.alt = "afficheFilm";
+      img.className = "imageFilm";
+      img.setAttribute("id", filmData.results[i].id)
 
-    cardImage.appendChild(img);
+      cardImage.appendChild(img);
 
-    const cardHeader = document.createElement("div");
-    cardHeader.className = "card-content";
-    cardHeader.setAttribute("id", filmData.results[i].id)
+      const cardHeader = document.createElement("div");
+      cardHeader.className = "card-content";
+      cardHeader.setAttribute("id", filmData.results[i].id)
 
-    const title = document.createElement("p");
-    title.className = "media-content";
-    title.textContent = filmData.results[i].title;
-    title.setAttribute("id", filmData.results[i].id)
+      const title = document.createElement("p");
+      title.className = "media-content";
+      title.textContent = filmData.results[i].title;
+      title.setAttribute("id", filmData.results[i].id)
 
-    cardHeader.appendChild(title);
-    cardHeader.setAttribute("id", filmData.results[i].id)
+      cardHeader.appendChild(title);
+      cardHeader.setAttribute("id", filmData.results[i].id)
 
-    container.appendChild(cardImage);
-    container.appendChild(cardHeader);
+      container.appendChild(cardImage);
+      container.appendChild(cardHeader);
 
-    HOMEPAGE.appendChild(container);
+      HOMEPAGE.appendChild(container);
+    }
   }
 }
 //******************************************************************************************************************************************************* */
@@ -183,7 +190,7 @@ async function detailFilm(IdFilm) {
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Budget : </strong>${infoMovie.budget}$<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
-  
+
   const DivButton = document.createElement("div")
   DivButton.className = "buttons has-addons is-centered";
 
@@ -266,6 +273,15 @@ async function upcoming(page) {
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
+
+async function search(page, input) {
+  const RESPONSE = await fetch(
+    `https://api.themoviedb.org/3/search/movie?query=${input}&include_adult=false&language=fr-FR&page=${page}`,
+    options
+  );
+  const FILMS = await RESPONSE.json();
+  return FILMS;
+}
 //******************************************************************************************************************************************************* */
 //Changement de catégorie dans la navbar 
 async function homePageSelection(categorie, page) {
@@ -277,6 +293,8 @@ async function homePageSelection(categorie, page) {
     showHomePage(await PopularMovies(page));
   } else if (categorie == 4) {
     showHomePage(await nowPlaying(page));
+  } else if (categorie == 5) {
+    showHomePage(await search(page,currentInput));
   }
 
 }
@@ -288,15 +306,20 @@ headerSlide();
 //******************************************************************************************************************************************************* */
 //Pagination de la page 
 
+
+
 function showDetail(event) {
-  console.log(event.target.id)
   detailFilm(event.target.id)
 }
 
+
+
 btnHome.addEventListener("click", async () => {
-    detailDiv.innerHTML = ""
-    page.style.display = "inline"
-    console.log("test") 
+  detailDiv.innerHTML = ""
+  page.style.display = "inline"
+  currentCategorie = 1
+  PAGE1.click()
+  homePageSelection(currentCategorie, currentpage)
 })
 
 
@@ -336,8 +359,11 @@ MAXPAGE.addEventListener("click", async () => {
   CURRENTPAGE.innerText = currentpage;
 });
 
+
+
 SELECTIONPAGE1.addEventListener("click", async () => {
   currentCategorie = 1
+  PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button is-success is-selected")
   SELECTIONPAGE2.setAttribute("class", "button")
   SELECTIONPAGE3.setAttribute("class", "button")
@@ -346,6 +372,7 @@ SELECTIONPAGE1.addEventListener("click", async () => {
 });
 SELECTIONPAGE2.addEventListener("click", async () => {
   currentCategorie = 2
+  PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button")
   SELECTIONPAGE2.setAttribute("class", "button is-link is-selected")
   SELECTIONPAGE3.setAttribute("class", "button")
@@ -354,6 +381,7 @@ SELECTIONPAGE2.addEventListener("click", async () => {
 });
 SELECTIONPAGE3.addEventListener("click", async () => {
   currentCategorie = 3
+  PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button")
   SELECTIONPAGE2.setAttribute("class", "button")
   SELECTIONPAGE3.setAttribute("class", "button is-danger is-selected")
@@ -362,6 +390,7 @@ SELECTIONPAGE3.addEventListener("click", async () => {
 });
 SELECTIONPAGE4.addEventListener("click", async () => {
   currentCategorie = 4
+  PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button")
   SELECTIONPAGE2.setAttribute("class", "button")
   SELECTIONPAGE3.setAttribute("class", "button")
@@ -369,4 +398,16 @@ SELECTIONPAGE4.addEventListener("click", async () => {
   homePageSelection(currentCategorie, currentpage)
 });
 
+searchBtn.addEventListener("click", async () => {
+  currentInput = document.getElementById("searchInput").value;
+  if (currentInput != "") {
+    currentCategorie = 5
+    PAGE1.click()
+    homePageSelection(currentCategorie, currentpage)
+    SELECTIONPAGE1.setAttribute("class", "button")
+    SELECTIONPAGE2.setAttribute("class", "button")
+    SELECTIONPAGE3.setAttribute("class", "button")
+    SELECTIONPAGE4.setAttribute("class", "button")
+  }
+  })
 
