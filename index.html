@@ -13,48 +13,101 @@
 </head>
 
 <body id="body">
-    <div id="Page" style="display: inline;">
-    <header id="headerMovie">
-    </header>
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
 
-    <div class="buttons has-addons is-centered">
-        <button id="selectionPage1" class="button is-success is-selected">Tendance</button>
-        <button id="selectionPage2" class="button">Les mieux notés</button>
-        <button id="selectionPage3" class="button">Populaire</button>
-        <button id="selectionPage4" class="button">Au cinéma</button>
-    </div>
+            <a class="navbar-item" href="https://c.tenor.com/lrxCBWPtrAoAAAAC/tenor.gif">
+                <img src="Img/logo.png" alt="Logo" width="126" height="84">
+            </a>
 
-    <div id="homePage"></div>
 
-    <nav class="pagination" role="navigation" aria-label="pagination">
-        <ul class="pagination-list">
-            <li>
-                <a href="#" class="pagination-previous" id="previousButton">Previous</a>
-            </li>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
 
-            <li>
-                <a href="#" class="pagination-link" id="Page1">1</a>
-            </li>
-            <li>
-                <span class="pagination-ellipsis">&hellip;</span>
-            </li>
-            <li>
-                <a class="pagination-link is-current" id="currentPage">1</a>
-            </li>
-            <li>
-                <span class="pagination-ellipsis">&hellip;</span>
-            </li>
-            <li>
-                <a href="#" class="pagination-link" id="maxPage">100</a>
-            </li>
-            <li>
-                <a href="#" class="pagination-next" id="nextButton">Next page</a>
-            </li>
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a id="btnHome" class="navbar-item">
+                    Home
+                </a>
+            </div>
+            <div class="level-item">
+                <div class="field has-addons">
+                    <p class="control">
+                        <input class="input" type="text" placeholder="Find a post" />
+                    </p>
+                    <p class="control">
+                        <button class="button">Search</button>
+                    </p>
+                </div>
+            </div>
 
-        </ul>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button is-light">
+                            Log in
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </nav>
 
-    <canvas id="inshCaPasse" width="960" height="960" style="display: none; box-sizing: border-box; height: 568px; width: 568px;"></canvas> <!-- on ne l'affiche pas pour l'instant-->
+    <div id="Page" style="display: inline;">
+        <header id="headerMovie">
+        </header>
+
+        <div class="buttons has-addons is-centered">
+            <button id="selectionPage1" class="button is-success is-selected">Tendance</button>
+            <button id="selectionPage2" class="button">Les mieux notés</button>
+            <button id="selectionPage3" class="button">Populaire</button>
+            <button id="selectionPage4" class="button">Au cinéma</button>
+        </div>
+
+        <div id="homePage"></div>
+
+        <nav class="pagination" role="navigation" aria-label="pagination">
+            <ul class="pagination-list">
+                <li>
+                    <a href="#" class="pagination-previous" id="previousButton">Previous</a>
+                </li>
+
+                <li>
+                    <a href="#" class="pagination-link" id="Page1">1</a>
+                </li>
+                <li>
+                    <span class="pagination-ellipsis">&hellip;</span>
+                </li>
+                <li>
+                    <a class="pagination-link is-current" id="currentPage">1</a>
+                </li>
+                <li>
+                    <span class="pagination-ellipsis">&hellip;</span>
+                </li>
+                <li>
+                    <a href="#" class="pagination-link" id="maxPage">100</a>
+                </li>
+                <li>
+                    <a href="#" class="pagination-next" id="nextButton">Next page</a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <canvas id="inshCaPasse" width="960" height="960"
+            style="display: none; box-sizing: border-box; height: 568px; width: 568px;"></canvas>
+    </div>
+    <div id="detailDiv"></div>
+    <!-- on ne l'affiche pas pour l'instant-->
 
 </body>
 

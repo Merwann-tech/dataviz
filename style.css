@@ -10,9 +10,18 @@ body {
   max-width: 95vw;
 }
 
+#detailDiv {
+  padding-top: 20px;
+}
+
 .card {
   margin-bottom: 24px;
 }
+.card-content{
+  padding: 0%;
+  text-align: center;
+}
+
 
 .pagination-list {
   justify-content: center;
@@ -22,7 +31,11 @@ header {
   display: flex;
 }
 
-
+.imageFilm {
+  width: 160px;
+  height: 230px;
+  object-fit: cover;
+}
 
 .header-image.visible {
   opacity: 1;
@@ -77,13 +90,13 @@ header {
   max-width: 600px;
 }
 
-.media-content{
-  text-align: center;
-  font-size: 18px;
+.media-content {
+  text-align:center;
+  font-size: 14px;
   font-weight: 700;
 }
 
-#dataGraph{
+#dataGraph {
   display: flex;
   max-width: 50vw;
   max-height: 50vh;

@@ -20,8 +20,10 @@ const SELECTIONPAGE3 = document.getElementById("selectionPage3");
 const SELECTIONPAGE4 = document.getElementById("selectionPage4");
 const page = document.getElementById("Page");
 const BODY = document.getElementById("body");
+const btnHome = document.getElementById("btnHome");
+const detailDiv = document.getElementById("detailDiv");
 
-const TRANSITION_DURATION = 800;
+const TRANSITION_DURATION = 500;
 const SLIDE_INTERVAL = 10000 + (TRANSITION_DURATION * 2);
 //******************************************************************************************************************************************************* */
 let backupBody = BODY.innerHTML
@@ -101,11 +103,11 @@ async function showHomeHeader(filmData) {
   const headerParagraph = document.createElement("p");
   headerParagraph.setAttribute("id", filmData.results[slide].id)
   headerParagraph.className = "header-paragraph";
-  headerParagraph.innerHTML += `<strong style="font-size: 40px;">${infoMovie.title}</strong><br><br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ''} / ${infoMovie.genres[1]?.name || ''} <br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
+  headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 40px;">${infoMovie.title}</strong><br><br>`;
+  headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
+  headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ''} / ${infoMovie.genres[1]?.name || ''} <br>`;
+  headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
+  headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
   // headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
   if (oldHeader) {
     // Supprime la classe visible pour déclencher le fade-out
@@ -153,7 +155,6 @@ async function headerSlide() {
 //******************************************************************************************************************************************************* */
 async function detailFilm(IdFilm) {
   page.style.display = "none"
-  const detailDiv = document.createElement("div");
 
   const headerDiv = document.createElement("div");
   headerDiv.className = "detail";
@@ -182,10 +183,14 @@ async function detailFilm(IdFilm) {
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Budget : </strong>${infoMovie.budget}$<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
+  
+  const DivButton = document.createElement("div")
+  DivButton.className = "buttons has-addons is-centered";
 
   const button = document.createElement("button")
   button.innerText = "back"
-  button.className = "button is-link is-dark";
+  button.className = "button is-link is-dark ";
+
   button.addEventListener("click", () => {
     detailDiv.innerHTML = ""
     page.style.display = "inline"
@@ -193,12 +198,11 @@ async function detailFilm(IdFilm) {
   })
 
   //Le tout rentré dans le HTML
-
+  DivButton.appendChild(button)
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
   detailDiv.appendChild(headerDiv);
-  detailDiv.appendChild(button);
-  BODY.appendChild(detailDiv);
+  detailDiv.appendChild(DivButton);
 }
 
 //******************************************************************************************************************************************************* */
@@ -285,10 +289,15 @@ headerSlide();
 //Pagination de la page 
 
 function showDetail(event) {
+  console.log(event.target.id)
   detailFilm(event.target.id)
 }
 
-
+btnHome.addEventListener("click", async () => {
+    detailDiv.innerHTML = ""
+    page.style.display = "inline"
+    console.log("test") 
+})
 
 
 NEXTBUTTON.addEventListener("click", async () => {
