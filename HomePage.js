@@ -23,7 +23,7 @@ let currentCategorie = 1;
 let totalPages = 100;
 let slide = 0;
 let currentInput = ""
-// import { updateChartwithGenre } from "./graphGenre.js";
+import { updateChartwithGenre } from "./graphGenre.js";
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {

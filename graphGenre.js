@@ -1,7 +1,6 @@
 // Valeurs par défaut pour faire le premier appel de la fonction
 let categoryDisplayedDefault = 1 // correspond à la catégorie trending donc celle de la page d'accueil
 let pageDefault = 1 // valeur par défaut, on va la changer à l'avenir
-let categoryNameDefault = "" // valeur par défaut, on va la changer au fur et à mesure de nos instances
 let genreChart //
 
 //Contient notre tableau de référence qui associe l'id avec les genres
@@ -62,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const DISPLAYGRAPHGENRE = document.getElementById('displayGraphGenre')
   genreChart = new Chart(DISPLAYGRAPHGENRE, configGenre)
+  updateChartwithGenre(categoryDisplayedDefault, pageDefault)
 })
 
 
