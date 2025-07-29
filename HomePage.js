@@ -1,11 +1,4 @@
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWZkMWUyNTE0OTgzYWVkODc4N2Y0ZThlN2IwZGFmZCIsIm5iZiI6MTc1MzEwMTU1Ni4yOTMsInN1YiI6IjY4N2UzNGY0Mjc0YjA5MWY3NjUyOGY3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Y7LqI4nVTIqGOxo4C0MOIe2kH0W9VBOa51m3P5mtd6U",
-  },
-};
+
 //******************************************************************************************************************************************************* */
 const HEADER = document.getElementById("headerMovie");
 const HOMEPAGE = document.getElementById("homePage");
@@ -36,21 +29,7 @@ let totalPages = 100;
 let slide = 0;
 let headerInterval = null;
 let currentInput = ""
-let currentDate = new Date();
-let day = currentDate.getDate();
-let month = currentDate.getMonth() + 1;
-let year = currentDate.getFullYear();
 
-//******************************************************************************************************************************************************* */
-//Récupérer la date du jour avec des "0" si le mois ou le jour est inférieur à 10 pour que l'API reconnaisse la date dans le upComing()
-function formatDate() {
-    // Formatage pour avoir toujours 2 chiffres pour jour/mois
-    if (day < 10) day = "0" + day;
-    if (month < 10) month = "0" + month;
-
-
-    return `${year}-${month}-${day}`;
-}
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
@@ -240,68 +219,54 @@ async function urlBackdrop(backdrop_path) {
 
 async function infoFilm(id) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/movies/${id}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/movies/${id}`);
   const FILM = await RESPONSE.json();
   return FILM;
 }
 
 async function trendingMovies(page) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/trending/${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/trending/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 
 async function PopularMovies(page) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/popular/${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/popular/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 
 async function topRated(page) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/top_rated/${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/top_rated/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 async function nowPlaying(page) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/now_playing/${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/now_playing/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 async function upcoming(page) {
   const RESPONSE = await fetch(
-    // `https://api.themoviedb.org/3/movie/upcoming?language=fr-FR&page=${page}`,
-    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&page=${page}&sort_by=popularity.desc&with_release_type=2|3&primary_release_date.gte=${formatDate()}&primary_release_date.lte=2025-10-29`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/upcoming/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 
 async function search(page, input) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/search/movie?query=${input}&include_adult=false&language=fr-FR&page=${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/search/${input}/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 //******************************************************************************************************************************************************* */
 //Changement de catégorie dans la navbar 
 async function homePageSelection(categorie, page) {
+  console.log(categorie)
   if (categorie == 1) {
     showHomePage(await trendingMovies(page));
   } else if (categorie == 2) {

@@ -21,6 +21,7 @@ body {
 
 #homePageGraph{
   width: 30%;
+  flex-direction: column;
 }
 
 #detailDiv {
