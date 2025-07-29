@@ -1,11 +1,4 @@
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWZkMWUyNTE0OTgzYWVkODc4N2Y0ZThlN2IwZGFmZCIsIm5iZiI6MTc1MzEwMTU1Ni4yOTMsInN1YiI6IjY4N2UzNGY0Mjc0YjA5MWY3NjUyOGY3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Y7LqI4nVTIqGOxo4C0MOIe2kH0W9VBOa51m3P5mtd6U",
-  },
-};
+
 //******************************************************************************************************************************************************* */
 const HEADER = document.getElementById("headerMovie");
 const HOMEPAGE = document.getElementById("homePage");
@@ -28,6 +21,7 @@ const searchBtn = document.getElementById("searchBtn");
 const TRANSITION_DURATION = 500;
 const SLIDE_INTERVAL = 10000 + (TRANSITION_DURATION * 2);
 //******************************************************************************************************************************************************* */
+
 let backupBody = BODY.innerHTML
 let currentpage = 1;
 let currentCategorie = 1
@@ -35,6 +29,7 @@ let totalPages = 100;
 let slide = 0;
 let headerInterval = null;
 let currentInput = ""
+
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
@@ -224,67 +219,54 @@ async function urlBackdrop(backdrop_path) {
 
 async function infoFilm(id) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?language=fr-FR`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/movies/${id}`);
   const FILM = await RESPONSE.json();
   return FILM;
 }
 
 async function trendingMovies(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/trending/movie/day?language=fr-FR&page=${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/trending/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 
 async function PopularMovies(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/popular?language=fr-FR&page=${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/popular/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 
 async function topRated(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/top_rated?language=fr-FR&page=${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/top_rated/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 async function nowPlaying(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/now_playing?language=fr-FR&page=${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/now_playing/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 async function upcoming(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?language=fr-FR&page=${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/upcoming/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 
 async function search(page, input) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/search/movie?query=${input}&include_adult=false&language=fr-FR&page=${page}`,
-    options
-  );
+    `https://dataviz-backend-aizu.onrender.com/search/${input}/${page}`);
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 //******************************************************************************************************************************************************* */
 //Changement de catégorie dans la navbar 
 async function homePageSelection(categorie, page) {
+  console.log(categorie)
   if (categorie == 1) {
     showHomePage(await trendingMovies(page));
   } else if (categorie == 2) {
@@ -414,4 +396,5 @@ searchBtn.addEventListener("click", async () => {
     SELECTIONPAGE4.setAttribute("class", "button")
   }
 })
+
 
