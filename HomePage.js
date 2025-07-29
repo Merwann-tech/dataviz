@@ -11,7 +11,6 @@ const SELECTIONPAGE2 = document.getElementById("selectionPage2");
 const SELECTIONPAGE3 = document.getElementById("selectionPage3");
 const SELECTIONPAGE4 = document.getElementById("selectionPage4");
 const PAGE = document.getElementById("Page");
-const BODY = document.getElementById("body");
 const BUTTONHOME = document.getElementById("btnHome");
 const DETAILDIV = document.getElementById("detailDiv");
 const SEARCHBUTTON = document.getElementById("searchBtn");
@@ -23,7 +22,6 @@ let currentpage = 1;
 let currentCategorie = 1;
 let totalPages = 100;
 let slide = 0;
-let headerInterval = null;
 let currentInput = ""
 // import { updateChartwithGenre } from "./graphGenre.js";
 //******************************************************************************************************************************************************* */
@@ -31,7 +29,11 @@ let currentInput = ""
 async function showHomePage(filmData) {
   HOMEPAGE.innerHTML = "";
   totalPages = filmData.total_pages;
-  MAXPAGE.innerText = totalPages;
+  if (totalPages > 500) {
+    MAXPAGE.innerText = 500
+  } else {
+    MAXPAGE.innerText = totalPages;
+  }
   for (let i = 0; i < filmData.results.length; i++) {
     if (filmData.results[i].poster_path != null) {
       const container = document.createElement("div");
@@ -88,8 +90,8 @@ async function showHomeHeader(filmData) {
     rgba(31,31,31,0.5) 30%,
     rgba(31,31,31,0.84) 60%,
     rgba(31,31,31,0.84) 100%), url('${await urlBackdrop(
-      infoMovie.backdrop_path
-    )}')`;
+    infoMovie.backdrop_path
+  )}')`;
 
   headerDiv.style.backgroundSize = "cover";
   headerDiv.style.backgroundPosition = "center";
@@ -108,13 +110,11 @@ async function showHomeHeader(filmData) {
     headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
   }
   if (infoMovie.genres.length == 1)
-    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${
-      infoMovie.genres[0]?.name || ""
-    } <br>`;
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ""
+      } <br>`;
   else {
-    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${
-      infoMovie.genres[0]?.name || ""
-    } / ${infoMovie.genres[1]?.name || ""} <br>`;
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ""
+      } / ${infoMovie.genres[1]?.name || ""} <br>`;
   }
 
   headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
@@ -174,8 +174,8 @@ async function detailFilm(IdFilm) {
     rgba(31,31,31,0.5) 30%,
     rgba(31,31,31,0.84) 60%,
     rgba(31,31,31,0.84) 100%), url('${await urlBackdrop(
-      infoMovie.backdrop_path
-    )}')`;
+    infoMovie.backdrop_path
+  )}')`;
 
   headerDiv.style.backgroundSize = "cover";
   headerDiv.style.backgroundPosition = "center";
@@ -193,13 +193,11 @@ async function detailFilm(IdFilm) {
   }
 
   if (infoMovie.genres.length == 1)
-    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${
-      infoMovie.genres[0]?.name || ""
-    } <br>`;
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ""
+      } <br>`;
   else {
-    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${
-      infoMovie.genres[0]?.name || ""
-    } / ${infoMovie.genres[1]?.name || ""} <br>`;
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ""
+      } / ${infoMovie.genres[1]?.name || ""} <br>`;
   }
 
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
