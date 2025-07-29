@@ -18,11 +18,11 @@ const SELECTIONPAGE1 = document.getElementById("selectionPage1");
 const SELECTIONPAGE2 = document.getElementById("selectionPage2");
 const SELECTIONPAGE3 = document.getElementById("selectionPage3");
 const SELECTIONPAGE4 = document.getElementById("selectionPage4");
-const page = document.getElementById("Page");
+const PAGE = document.getElementById("Page");
 const BODY = document.getElementById("body");
-const btnHome = document.getElementById("btnHome");
-const detailDiv = document.getElementById("detailDiv");
-const searchBtn = document.getElementById("searchBtn");
+const BUTTONHOME = document.getElementById("btnHome");
+const DETAILDIV = document.getElementById("detailDiv");
+const SEARCHBUTTON = document.getElementById("searchBtn");
 
 
 const TRANSITION_DURATION = 500;
@@ -177,7 +177,7 @@ async function headerSlide() {
 }
 //******************************************************************************************************************************************************* */
 async function detailFilm(IdFilm) {
-  page.style.display = "none"
+  PAGE.style.display = "none"
 
   const headerDiv = document.createElement("div");
   headerDiv.className = "detail";
@@ -215,8 +215,8 @@ async function detailFilm(IdFilm) {
   button.className = "button is-link is-dark ";
 
   button.addEventListener("click", () => {
-    detailDiv.innerHTML = ""
-    page.style.display = "inline"
+    DETAILDIV.innerHTML = ""
+    PAGE.style.display = "inline"
 
   })
 
@@ -224,8 +224,8 @@ async function detailFilm(IdFilm) {
   DivButton.appendChild(button)
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
-  detailDiv.appendChild(headerDiv);
-  detailDiv.appendChild(DivButton);
+  DETAILDIV.appendChild(headerDiv);
+  DETAILDIV.appendChild(DivButton);
 }
 
 //******************************************************************************************************************************************************* */
@@ -331,9 +331,9 @@ function showDetail(event) {
 
 
 
-btnHome.addEventListener("click", async () => {
-  detailDiv.innerHTML = ""
-  page.style.display = "inline"
+BUTTONHOME.addEventListener("click", async () => {
+  DETAILDIV.innerHTML = ""
+  PAGE.style.display = "inline"
   currentCategorie = 1
   PAGE1.click()
   SELECTIONPAGE1.setAttribute("class", "button is-success is-selected")
@@ -419,7 +419,7 @@ SELECTIONPAGE4.addEventListener("click", async () => {
   homePageSelection(currentCategorie, currentpage)
 });
 
-searchBtn.addEventListener("click", async () => {
+SEARCHBUTTON.addEventListener("click", async () => {
   currentInput = document.getElementById("searchInput").value;
   if (currentInput != "") {
     currentCategorie = 5
