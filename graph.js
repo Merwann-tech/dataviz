@@ -1,9 +1,36 @@
-
-
 //********************************************************************Variables globales*****************************************************************
 
 let chart // on définit une variable chart qui va contenir notre affichage ( c'est la chart qu'on va créer toutes les x secondes )
 let yearToShow = 2014 // on l'a met en variable globale car on doit pouvoir la modifier lors de notre appel du setInterval. --> démarre l'affichage en 2015
+
+// Valeurs par défaut pour faire le premier appel de la fonction
+let categoryDisplayedDefault = 1 // correspond à la catégorie trending donc celle de la page d'accueil
+let pageDefault = 1 // valeur par défaut, on va la changer à l'avenir
+let categoryNameDefault = "" // valeur par défaut, on va la changer au fur et à mesure de nos instances
+
+//Contient notre tableau de référence qui associe l'id avec les genres
+const genreIdToIndex = {
+  28: 0, // Action
+  12: 1, // Aventure
+  16: 2, // Animation
+  35: 3, // Comédie
+  80: 4, // Crime
+  99: 5, // Documentaire
+  18: 6, // Drame
+  10751: 7, // Familial
+  14: 8, // Histoire
+  36: 9, // Fantastique
+  27: 10, // Horreur
+  10402: 11, // Musique
+  9648: 12, // Mystère
+  10749: 13, // Romance
+  878: 14, // Science-Fiction
+  10770: 15, // Téléfilm
+  53: 16, // Thriller
+  10752: 17, // Guerre
+  37: 18 // Western
+}
+
 const CURRENTYEAR = new Date() // on récupère la date système
 const ACTUALYEAR = CURRENTYEAR.getFullYear() // on récupère l'année de la date système
 
@@ -46,22 +73,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 //méthodo qui permet de récupérer les informations précises de la page
-async function getPageGenre(categorieToShow, PageToShow){
-  const genreCounts = new Array(19).fill(0) // on créer un tableau de 19 elements et on les remplit de 0 pour éviter qu'ils soient indéfinis
-  const response = await fetch(`https://dataviz-backend-aizu.onrender.com/trending/${page}`)
+//penser à inclure une function qui permet de vérifier la catégorie pour changer la catégorie à afficher
+async function getPageGenre(categoryToShow, pageToShow){
+    
+  const response = await fetch(`https://dataviz-backend-aizu.onrender.com/${categoryToShow}/${pageToShow}`)
   const ANSWER = await response.json()
-  console.log(ANSWER.results)
-  return ANSWER
+  
+  return sortDataGenre(ANSWER.results) // permet de renvoyer le tableau créer dans la fonction
 }
+
+//permet de changer l'url et la catégorie de la page pour avoir des informations différentes en fonction des catégories
+function chosenCategory(category){
+  if( category == 1 ) return "trending"
+  if( category == 2 ) return "top_rated"
+  if( category == 3 ) return "popular"
+  if( category == 4 ) return "now_playing"
+  if( category == 5 ) return
+}
+
 
 // Méthodo qui va permettre de créer le tableau de données de la page
 // récupère les infos de ANSWER.results et va les trier dans un tableau de genre ( les genres ont des id )
+// récuperer les id et créer un tableau qui va prendre les id dans un ordre précis ( voir label de DATAGRAPH2)
 async function sortDataGenre(dataPage){
+  const genreCounts = new Array(19).fill(0) // on créer un tableau de 19 elements et on les remplit de 0 pour éviter qu'ils soient indéfinis
 
+  for(const movie of dataPage){ // pour chaque film de dataPage ( en l'occurence la data de la page)
+    for(const genreId of movie.genre_ids){ // pour chaque genre écrit dans chaque film ( il peut y en avoir plusieurs )
+      const index = genreIdToIndex[genreId] // regarde chaque élément du tableau de genre
+      if(index !== undefined){ // sécurité --> backdrop vide, on ne sait jamais
+        genreCounts[index]++
+      }
+    }
+  }
+
+  return genreCounts
 }
 
-async function updateChartwithGenre(categorieToShow, pageToShow){
-  const arrayInfo = await getPageGenre(categorieToShow, pageToShow) // des informations qu'on retrouve dans les addEventListener présent dans les lignes d'avant ( a voir si il faut pas lancer la fonction depuis l'autre fichier)
+// la método qui va update le graphe quand on va changer de page
+export async function updateChartwithGenre(categoryToGraph, pageToGraph){
+
+  const categoryName = chosenCategory(categoryToGraph)
+  const arrayInfo = await getPageGenre(categoryName, pageToGraph) // des informations qu'on retrouve dans les addEventListener présent dans les lignes d'avant ( a voir si il faut pas lancer la fonction depuis l'autre fichier)
   
   // permet de transférer les données de notre array dans notre chart
   for (let i = 0; i < 19; i++) {
@@ -95,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
       responsive: true,
       plugins: {
         legend: {
-          position: 'top',
+          position: 'bottom',
         },
         title: {    
           display: true,

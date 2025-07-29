@@ -29,7 +29,7 @@ let totalPages = 100;
 let slide = 0;
 let headerInterval = null;
 let currentInput = ""
-
+import { updateChartwithGenre } from "./graph";
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
@@ -355,6 +355,7 @@ SELECTIONPAGE1.addEventListener("click", async () => {
   SELECTIONPAGE3.setAttribute("class", "button")
   SELECTIONPAGE4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
+  updateChartwithGenre(currentCategorie, currentpage)
 });
 SELECTIONPAGE2.addEventListener("click", async () => {
   currentCategorie = 2
@@ -364,6 +365,7 @@ SELECTIONPAGE2.addEventListener("click", async () => {
   SELECTIONPAGE3.setAttribute("class", "button")
   SELECTIONPAGE4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
+  updateChartwithGenre(currentCategorie, currentpage)
 });
 SELECTIONPAGE3.addEventListener("click", async () => {
   currentCategorie = 3
@@ -373,6 +375,7 @@ SELECTIONPAGE3.addEventListener("click", async () => {
   SELECTIONPAGE3.setAttribute("class", "button is-danger is-selected")
   SELECTIONPAGE4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
+  updateChartwithGenre(currentCategorie, currentpage)
 });
 SELECTIONPAGE4.addEventListener("click", async () => {
   currentCategorie = 4
@@ -382,6 +385,7 @@ SELECTIONPAGE4.addEventListener("click", async () => {
   SELECTIONPAGE3.setAttribute("class", "button")
   SELECTIONPAGE4.setAttribute("class", "button is-warning is-selected")
   homePageSelection(currentCategorie, currentpage)
+  updateChartwithGenre(currentCategorie, currentpage)
 });
 
 SEARCHBUTTON.addEventListener("click", async () => {
@@ -390,6 +394,7 @@ SEARCHBUTTON.addEventListener("click", async () => {
     currentCategorie = 5
     PAGE1.click()
     homePageSelection(currentCategorie, currentpage)
+    updateChartwithGenre(currentCategorie, currentpage)
     SELECTIONPAGE1.setAttribute("class", "button")
     SELECTIONPAGE2.setAttribute("class", "button")
     SELECTIONPAGE3.setAttribute("class", "button")
