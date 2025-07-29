@@ -28,6 +28,7 @@ const searchBtn = document.getElementById("searchBtn");
 const TRANSITION_DURATION = 500;
 const SLIDE_INTERVAL = 10000 + (TRANSITION_DURATION * 2);
 //******************************************************************************************************************************************************* */
+
 let backupBody = BODY.innerHTML
 let currentpage = 1;
 let currentCategorie = 1
@@ -35,6 +36,21 @@ let totalPages = 100;
 let slide = 0;
 let headerInterval = null;
 let currentInput = ""
+let currentDate = new Date();
+let day = currentDate.getDate();
+let month = currentDate.getMonth() + 1;
+let year = currentDate.getFullYear();
+
+//******************************************************************************************************************************************************* */
+//Récupérer la date du jour avec des "0" si le mois ou le jour est inférieur à 10 pour que l'API reconnaisse la date dans le upComing()
+function formatDate() {
+    // Formatage pour avoir toujours 2 chiffres pour jour/mois
+    if (day < 10) day = "0" + day;
+    if (month < 10) month = "0" + month;
+
+
+    return `${year}-${month}-${day}`;
+}
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
@@ -267,7 +283,8 @@ async function nowPlaying(page) {
 }
 async function upcoming(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?language=fr-FR&page=${page}`,
+    // `https://api.themoviedb.org/3/movie/upcoming?language=fr-FR&page=${page}`,
+    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&page=${page}&sort_by=popularity.desc&with_release_type=2|3&primary_release_date.gte=${formatDate()}&primary_release_date.lte=2025-10-29`,
     options
   );
   const FILMS = await RESPONSE.json();
