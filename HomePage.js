@@ -25,7 +25,7 @@ let totalPages = 100;
 let slide = 0;
 let headerInterval = null;
 let currentInput = ""
-import { updateChartwithGenre } from "./graph";
+// import { updateChartwithGenre } from "./graphGenre.js";
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
@@ -303,7 +303,6 @@ async function search(page, input) {
 //******************************************************************************************************************************************************* */
 //Changement de catégorie dans la navbar
 async function homePageSelection(categorie, page) {
-  console.log(categorie);
   if (categorie == 1) {
     showHomePage(await trendingMovies(page));
   } else if (categorie == 2) {
@@ -425,7 +424,6 @@ SEARCHBUTTON.addEventListener("click", async () => {
     currentCategorie = 5
     PAGE1.click()
     homePageSelection(currentCategorie, currentpage)
-    updateChartwithGenre(currentCategorie, currentpage)
     SELECTIONPAGE1.setAttribute("class", "button")
     SELECTIONPAGE2.setAttribute("class", "button")
     SELECTIONPAGE3.setAttribute("class", "button")
