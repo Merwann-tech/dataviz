@@ -1,12 +1,4 @@
-//méthodo pour pouvoir utiliser la clé API
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWZkMWUyNTE0OTgzYWVkODc4N2Y0ZThlN2IwZGFmZCIsIm5iZiI6MTc1MzEwMTU1Ni4yOTMsInN1YiI6IjY4N2UzNGY0Mjc0YjA5MWY3NjUyOGY3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Y7LqI4nVTIqGOxo4C0MOIe2kH0W9VBOa51m3P5mtd6U",
-  },
-}
+
 
 //********************************************************************Variables globales*****************************************************************
 
@@ -56,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 //méthodo qui permet de récupérer les informations précises de la page
 async function getPageGenre(categorieToShow, PageToShow){
   const genreCounts = new Array(19).fill(0) // on créer un tableau de 19 elements et on les remplit de 0 pour éviter qu'ils soient indéfinis
-  const response = await fetch(`https://api.themoviedb.org/3/${categorieToShow}/movie/day?language=fr-FR&page=${PageToShow}`, options)
+  const response = await fetch(`https://dataviz-backend-aizu.onrender.com/trending/${page}`)
   const ANSWER = await response.json()
   console.log(ANSWER.results)
   return ANSWER
@@ -139,7 +131,7 @@ async function dataFilm(yearToShow) {
 
   for (let i = 1; i <= 50; i++) { // nombre de page a analyser
     try {
-      const response = await fetch(`https://api.themoviedb.org/3/trending/movie/day?language=fr-FR&page=${i}`, options)
+      const response = await fetch(`https://dataviz-backend-aizu.onrender.com/trending/${page}`)
       const data = await response.json()
 
       if (data.results && Array.isArray(data.results)) { // on vérifie bien qu'on récupérer les informations de la page en cours et qu'on a un tableau
