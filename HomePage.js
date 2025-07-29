@@ -301,6 +301,7 @@ async function search(page, input) {
 //******************************************************************************************************************************************************* */
 //Changement de catégorie dans la navbar
 async function homePageSelection(categorie, page) {
+  updateChartwithGenre(currentCategorie, currentpage)
   if (categorie == 1) {
     showHomePage(await trendingMovies(page));
   } else if (categorie == 2) {
@@ -383,7 +384,6 @@ SELECTIONPAGE1.addEventListener("click", async () => {
   SELECTIONPAGE3.setAttribute("class", "button")
   SELECTIONPAGE4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
-  updateChartwithGenre(currentCategorie, currentpage)
 });
 SELECTIONPAGE2.addEventListener("click", async () => {
   currentCategorie = 2
@@ -393,7 +393,6 @@ SELECTIONPAGE2.addEventListener("click", async () => {
   SELECTIONPAGE3.setAttribute("class", "button")
   SELECTIONPAGE4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
-  updateChartwithGenre(currentCategorie, currentpage)
 });
 SELECTIONPAGE3.addEventListener("click", async () => {
   currentCategorie = 3
@@ -403,7 +402,6 @@ SELECTIONPAGE3.addEventListener("click", async () => {
   SELECTIONPAGE3.setAttribute("class", "button is-danger is-selected")
   SELECTIONPAGE4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
-  updateChartwithGenre(currentCategorie, currentpage)
 });
 SELECTIONPAGE4.addEventListener("click", async () => {
   currentCategorie = 4
@@ -413,7 +411,6 @@ SELECTIONPAGE4.addEventListener("click", async () => {
   SELECTIONPAGE3.setAttribute("class", "button")
   SELECTIONPAGE4.setAttribute("class", "button is-warning is-selected")
   homePageSelection(currentCategorie, currentpage)
-  updateChartwithGenre(currentCategorie, currentpage)
 });
 
 SEARCHBUTTON.addEventListener("click", async () => {
