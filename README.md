@@ -8,7 +8,7 @@ Le projet inclut également une visualisation graphique des données pour une me
 
 ## 📸 Aperçu
 
-
+<img width="1919" height="1079" alt="Image" src="https://github.com/user-attachments/assets/e79241ab-5333-4640-bdfa-1f73e2cd81a8" />
 
 ---
 
