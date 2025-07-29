@@ -131,7 +131,7 @@ async function dataFilm(yearToShow) {
 
   for (let i = 1; i <= 50; i++) { // nombre de page a analyser
     try {
-      const response = await fetch(`https://dataviz-backend-aizu.onrender.com/trending/${page}`)
+      const response = await fetch(`https://dataviz-backend-aizu.onrender.com/trending/${i}`)
       const data = await response.json()
 
       if (data.results && Array.isArray(data.results)) { // on vérifie bien qu'on récupérer les informations de la page en cours et qu'on a un tableau
