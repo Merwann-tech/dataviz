@@ -1,4 +1,3 @@
-
 //******************************************************************************************************************************************************* */
 const HEADER = document.getElementById("headerMovie");
 const HOMEPAGE = document.getElementById("homePage");
@@ -17,56 +16,55 @@ const BUTTONHOME = document.getElementById("btnHome");
 const DETAILDIV = document.getElementById("detailDiv");
 const SEARCHBUTTON = document.getElementById("searchBtn");
 
-
 const TRANSITION_DURATION = 500;
-const SLIDE_INTERVAL = 10000 + (TRANSITION_DURATION * 2);
+const SLIDE_INTERVAL = 10000 + TRANSITION_DURATION * 2;
 //******************************************************************************************************************************************************* */
 
-let backupBody = BODY.innerHTML
+let backupBody = BODY.innerHTML;
 let currentpage = 1;
-let currentCategorie = 1
+let currentCategorie = 1;
 let totalPages = 100;
 let slide = 0;
 let headerInterval = null;
-let currentInput = ""
+let currentInput = "";
 
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
   HOMEPAGE.innerHTML = "";
   totalPages = filmData.total_pages;
-  MAXPAGE.innerText = totalPages
+  MAXPAGE.innerText = totalPages;
   for (let i = 0; i < filmData.results.length; i++) {
     if (filmData.results[i].poster_path != null) {
       const container = document.createElement("div");
       container.className = "card";
-      container.addEventListener('click', showDetail)
-      container.setAttribute("id", filmData.results[i].id)
+      container.addEventListener("click", showDetail);
+      container.setAttribute("id", filmData.results[i].id);
 
       const cardImage = document.createElement("div");
       cardImage.className = "card-image";
-      cardImage.setAttribute("id", filmData.results[i].id)
+      cardImage.setAttribute("id", filmData.results[i].id);
 
       const img = document.createElement("img");
       img.src = await urlImage(filmData.results[i].poster_path);
       // img.width = 250
       img.alt = "afficheFilm";
       img.className = "imageFilm";
-      img.setAttribute("id", filmData.results[i].id)
+      img.setAttribute("id", filmData.results[i].id);
 
       cardImage.appendChild(img);
 
       const cardHeader = document.createElement("div");
       cardHeader.className = "card-content";
-      cardHeader.setAttribute("id", filmData.results[i].id)
+      cardHeader.setAttribute("id", filmData.results[i].id);
 
       const title = document.createElement("p");
       title.className = "media-content";
       title.textContent = filmData.results[i].title;
-      title.setAttribute("id", filmData.results[i].id)
+      title.setAttribute("id", filmData.results[i].id);
 
       cardHeader.appendChild(title);
-      cardHeader.setAttribute("id", filmData.results[i].id)
+      cardHeader.setAttribute("id", filmData.results[i].id);
 
       container.appendChild(cardImage);
       container.appendChild(cardHeader);
@@ -78,14 +76,12 @@ async function showHomePage(filmData) {
 //******************************************************************************************************************************************************* */
 //Affichage d'un slider avec affiche, détail qui fade out toutes les 20 secondes
 async function showHomeHeader(filmData) {
-
   const oldHeader = document.querySelector(".header-image");
-
 
   // Création du nouveau header
   const headerDiv = document.createElement("div");
   headerDiv.className = "header-image";
-  headerDiv.setAttribute("id", filmData.results[slide].id)
+  headerDiv.setAttribute("id", filmData.results[slide].id);
 
   let infoMovie = await infoFilm(filmData.results[slide].id);
   // Background du header est le backdrop du film, avec du style
@@ -93,21 +89,36 @@ async function showHomeHeader(filmData) {
     rgba(31,31,31,0.2) 0%,
     rgba(31,31,31,0.5) 30%,
     rgba(31,31,31,0.84) 60%,
-    rgba(31,31,31,0.84) 100%), url('${await urlBackdrop(infoMovie.backdrop_path)}')`;
+    rgba(31,31,31,0.84) 100%), url('${await urlBackdrop(
+      infoMovie.backdrop_path
+    )}')`;
 
   headerDiv.style.backgroundSize = "cover";
   headerDiv.style.backgroundPosition = "center";
   //Affichage de l'image du film
   const headerImg = document.createElement("img");
   headerImg.src = await urlImage(filmData.results[slide].poster_path);
-  headerImg.setAttribute("id", filmData.results[slide].id)
+  headerImg.setAttribute("id", filmData.results[slide].id);
   //Création des détails du film dans une balise p
   const headerParagraph = document.createElement("p");
-  headerParagraph.setAttribute("id", filmData.results[slide].id)
+  headerParagraph.setAttribute("id", filmData.results[slide].id);
   headerParagraph.className = "header-paragraph";
   headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 40px;">${infoMovie.title}</strong><br><br>`;
-  headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
-  headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ''} / ${infoMovie.genres[1]?.name || ''} <br>`;
+  if (infoMovie.runtime == 0) {
+    headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Durée :</strong> Inconnue<br>`;
+  } else {
+    headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
+  }
+  if (infoMovie.genres.length == 1)
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${
+      infoMovie.genres[0]?.name || ""
+    } <br>`;
+  else {
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${
+      infoMovie.genres[0]?.name || ""
+    } / ${infoMovie.genres[1]?.name || ""} <br>`;
+  }
+
   headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
   headerParagraph.innerHTML += `<strong id="${filmData.results[slide].id}" style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
   // headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
@@ -116,21 +127,18 @@ async function showHomeHeader(filmData) {
     oldHeader.classList.remove("visible");
 
     // ⏳ Attends que le fade-out soit fini
-    await new Promise(resolve => setTimeout(resolve, TRANSITION_DURATION));
-
+    await new Promise((resolve) => setTimeout(resolve, TRANSITION_DURATION));
 
     // Ensuite, on peut le supprimer du DOM
     oldHeader.remove();
   }
 
-
   //Le tout rentré dans le HTML
 
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
-  headerDiv.addEventListener('click', showDetail)
+  headerDiv.addEventListener("click", showDetail);
   HEADER.appendChild(headerDiv);
-
 
   // Lancer le fade-in
   setTimeout(() => {
@@ -140,27 +148,25 @@ async function showHomeHeader(filmData) {
 //******************************************************************************************************************************************************* */
 //Fonction pour passer de slide par slide dans le header
 async function headerSlide() {
-  let numberPage = 1
+  let numberPage = 1;
   const filmData = await upcoming(numberPage); // Charger une seule fois l'api
-  await showHomeHeader(filmData);       // Afficher immédiatement
+  await showHomeHeader(filmData); // Afficher immédiatement
 
   setInterval(async () => {
     if (slide == 19) {
       slide = 0;
-    }
-    else {
-      slide++
+    } else {
+      slide++;
     }
     await showHomeHeader(filmData);
   }, SLIDE_INTERVAL);
 }
 //******************************************************************************************************************************************************* */
 async function detailFilm(IdFilm) {
-  PAGE.style.display = "none"
+  PAGE.style.display = "none";
 
   const headerDiv = document.createElement("div");
   headerDiv.className = "detail";
-
 
   let infoMovie = await infoFilm(IdFilm);
   //Background du header est le backdrop du film, avec du style
@@ -168,7 +174,9 @@ async function detailFilm(IdFilm) {
     rgba(31,31,31,0.2) 0%,
     rgba(31,31,31,0.5) 30%,
     rgba(31,31,31,0.84) 60%,
-    rgba(31,31,31,0.84) 100%), url('${await urlBackdrop(infoMovie.backdrop_path)}')`;
+    rgba(31,31,31,0.84) 100%), url('${await urlBackdrop(
+      infoMovie.backdrop_path
+    )}')`;
 
   headerDiv.style.backgroundSize = "cover";
   headerDiv.style.backgroundPosition = "center";
@@ -179,28 +187,51 @@ async function detailFilm(IdFilm) {
   const headerParagraph = document.createElement("p");
   headerParagraph.className = "detail-paragraph";
   headerParagraph.innerHTML += `<strong style="font-size: 40px;">${infoMovie.title}</strong><br><br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${infoMovie.genres[0]?.name || ''} / ${infoMovie.genres[1]?.name || ''} <br>`;
+  if (infoMovie.runtime == 0) {
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Durée :</strong> Inconnue<br>`;
+  } else {
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Durée :</strong> ${infoMovie.runtime} minutes<br>`;
+  }
+
+  if (infoMovie.genres.length == 1)
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${
+      infoMovie.genres[0]?.name || ""
+    } <br>`;
+  else {
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Genres :</strong> ${
+      infoMovie.genres[0]?.name || ""
+    } / ${infoMovie.genres[1]?.name || ""} <br>`;
+  }
+
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Pays : </strong>${infoMovie.origin_country}<br>`;
   headerParagraph.innerHTML += `<strong style="font-size: 25px;">Date de sortie : </strong>${infoMovie.release_date}<br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Budget : </strong>${infoMovie.budget}$<br>`;
-  headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
 
-  const DivButton = document.createElement("div")
+  if (infoMovie.budget == 0) {
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Budget : </strong> Inconnue<br>`;
+  } else {
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Budget : </strong>${infoMovie.budget}$<br>`;
+  }
+
+  if (infoMovie.overview == "") {
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong> Inconnue<br>`;
+  } else {
+    headerParagraph.innerHTML += `<strong style="font-size: 25px;">Synopsis : <br></strong>${infoMovie.overview}<br>`;
+  }
+
+  const DivButton = document.createElement("div");
   DivButton.className = "buttons has-addons is-centered";
 
-  const button = document.createElement("button")
-  button.innerText = "back"
+  const button = document.createElement("button");
+  button.innerText = "back";
   button.className = "button is-link is-dark ";
 
   button.addEventListener("click", () => {
-    DETAILDIV.innerHTML = ""
-    PAGE.style.display = "inline"
-
-  })
+    DETAILDIV.innerHTML = "";
+    PAGE.style.display = "inline";
+  });
 
   //Le tout rentré dans le HTML
-  DivButton.appendChild(button)
+  DivButton.appendChild(button);
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
   DETAILDIV.appendChild(headerDiv);
@@ -219,54 +250,61 @@ async function urlBackdrop(backdrop_path) {
 
 async function infoFilm(id) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/movies/${id}`);
+    `https://dataviz-backend-aizu.onrender.com/movies/${id}`
+  );
   const FILM = await RESPONSE.json();
   return FILM;
 }
 
 async function trendingMovies(page) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/trending/${page}`);
+    `https://dataviz-backend-aizu.onrender.com/trending/${page}`
+  );
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 
 async function PopularMovies(page) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/popular/${page}`);
+    `https://dataviz-backend-aizu.onrender.com/popular/${page}`
+  );
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 
 async function topRated(page) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/top_rated/${page}`);
+    `https://dataviz-backend-aizu.onrender.com/top_rated/${page}`
+  );
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 async function nowPlaying(page) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/now_playing/${page}`);
+    `https://dataviz-backend-aizu.onrender.com/now_playing/${page}`
+  );
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 async function upcoming(page) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/upcoming/${page}`);
+    `https://dataviz-backend-aizu.onrender.com/upcoming/${page}`
+  );
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 
 async function search(page, input) {
   const RESPONSE = await fetch(
-    `https://dataviz-backend-aizu.onrender.com/search/${input}/${page}`);
+    `https://dataviz-backend-aizu.onrender.com/search/${input}/${page}`
+  );
   const FILMS = await RESPONSE.json();
   return FILMS;
 }
 //******************************************************************************************************************************************************* */
-//Changement de catégorie dans la navbar 
+//Changement de catégorie dans la navbar
 async function homePageSelection(categorie, page) {
-  console.log(categorie)
+  console.log(categorie);
   if (categorie == 1) {
     showHomePage(await trendingMovies(page));
   } else if (categorie == 2) {
@@ -278,45 +316,39 @@ async function homePageSelection(categorie, page) {
   } else if (categorie == 5) {
     showHomePage(await search(page, currentInput));
   }
-
 }
 //******************************************************************************************************************************************************* */
 //Appel des fonctions
-homePageSelection(currentCategorie, currentpage)
+homePageSelection(currentCategorie, currentpage);
 
 headerSlide();
 //******************************************************************************************************************************************************* */
-//Pagination de la page 
-
-
+//Pagination de la page
 
 function showDetail(event) {
-  detailFilm(event.target.id)
+  detailFilm(event.target.id);
 }
 
-
-
 BUTTONHOME.addEventListener("click", async () => {
-  DETAILDIV.innerHTML = ""
-  PAGE.style.display = "inline"
-  currentCategorie = 1
-  PAGE1.click()
-  SELECTIONPAGE1.setAttribute("class", "button is-success is-selected")
-  SELECTIONPAGE2.setAttribute("class", "button")
-  SELECTIONPAGE3.setAttribute("class", "button")
-  SELECTIONPAGE4.setAttribute("class", "button")
-  homePageSelection(currentCategorie, currentpage)
-})
-
+  DETAILDIV.innerHTML = "";
+  PAGE.style.display = "inline";
+  currentCategorie = 1;
+  PAGE1.click();
+  SELECTIONPAGE1.setAttribute("class", "button is-success is-selected");
+  SELECTIONPAGE2.setAttribute("class", "button");
+  SELECTIONPAGE3.setAttribute("class", "button");
+  SELECTIONPAGE4.setAttribute("class", "button");
+  homePageSelection(currentCategorie, currentpage);
+});
 
 NEXTBUTTON.addEventListener("click", async () => {
   if (currentpage < totalPages) {
     currentpage++;
-    homePageSelection(currentCategorie, currentpage)
+    homePageSelection(currentCategorie, currentpage);
     CURRENTPAGE.innerText = currentpage;
   } else {
     currentpage = 1;
-    homePageSelection(currentCategorie, currentpage)
+    homePageSelection(currentCategorie, currentpage);
     CURRENTPAGE.innerText = currentpage;
   }
 });
@@ -324,77 +356,73 @@ NEXTBUTTON.addEventListener("click", async () => {
 PREVIOUSBUTTON.addEventListener("click", async () => {
   if (currentpage > 1) {
     currentpage--;
-    homePageSelection(currentCategorie, currentpage)
+    homePageSelection(currentCategorie, currentpage);
     CURRENTPAGE.innerText = currentpage;
   } else {
     currentpage = totalPages;
-    homePageSelection(currentCategorie, currentpage)
+    homePageSelection(currentCategorie, currentpage);
     CURRENTPAGE.innerText = currentpage;
   }
 });
 
 PAGE1.addEventListener("click", async () => {
   currentpage = 1;
-  homePageSelection(currentCategorie, currentpage)
+  homePageSelection(currentCategorie, currentpage);
   CURRENTPAGE.innerText = currentpage;
 });
 
 MAXPAGE.addEventListener("click", async () => {
   currentpage = totalPages;
-  homePageSelection(currentCategorie, currentpage)
+  homePageSelection(currentCategorie, currentpage);
   CURRENTPAGE.innerText = currentpage;
 });
 
-
-
 SELECTIONPAGE1.addEventListener("click", async () => {
-  currentCategorie = 1
-  PAGE1.click()
-  SELECTIONPAGE1.setAttribute("class", "button is-success is-selected")
-  SELECTIONPAGE2.setAttribute("class", "button")
-  SELECTIONPAGE3.setAttribute("class", "button")
-  SELECTIONPAGE4.setAttribute("class", "button")
-  homePageSelection(currentCategorie, currentpage)
+  currentCategorie = 1;
+  PAGE1.click();
+  SELECTIONPAGE1.setAttribute("class", "button is-success is-selected");
+  SELECTIONPAGE2.setAttribute("class", "button");
+  SELECTIONPAGE3.setAttribute("class", "button");
+  SELECTIONPAGE4.setAttribute("class", "button");
+  homePageSelection(currentCategorie, currentpage);
 });
 SELECTIONPAGE2.addEventListener("click", async () => {
-  currentCategorie = 2
-  PAGE1.click()
-  SELECTIONPAGE1.setAttribute("class", "button")
-  SELECTIONPAGE2.setAttribute("class", "button is-link is-selected")
-  SELECTIONPAGE3.setAttribute("class", "button")
-  SELECTIONPAGE4.setAttribute("class", "button")
-  homePageSelection(currentCategorie, currentpage)
+  currentCategorie = 2;
+  PAGE1.click();
+  SELECTIONPAGE1.setAttribute("class", "button");
+  SELECTIONPAGE2.setAttribute("class", "button is-link is-selected");
+  SELECTIONPAGE3.setAttribute("class", "button");
+  SELECTIONPAGE4.setAttribute("class", "button");
+  homePageSelection(currentCategorie, currentpage);
 });
 SELECTIONPAGE3.addEventListener("click", async () => {
-  currentCategorie = 3
-  PAGE1.click()
-  SELECTIONPAGE1.setAttribute("class", "button")
-  SELECTIONPAGE2.setAttribute("class", "button")
-  SELECTIONPAGE3.setAttribute("class", "button is-danger is-selected")
-  SELECTIONPAGE4.setAttribute("class", "button")
-  homePageSelection(currentCategorie, currentpage)
+  currentCategorie = 3;
+  PAGE1.click();
+  SELECTIONPAGE1.setAttribute("class", "button");
+  SELECTIONPAGE2.setAttribute("class", "button");
+  SELECTIONPAGE3.setAttribute("class", "button is-danger is-selected");
+  SELECTIONPAGE4.setAttribute("class", "button");
+  homePageSelection(currentCategorie, currentpage);
 });
 SELECTIONPAGE4.addEventListener("click", async () => {
-  currentCategorie = 4
-  PAGE1.click()
-  SELECTIONPAGE1.setAttribute("class", "button")
-  SELECTIONPAGE2.setAttribute("class", "button")
-  SELECTIONPAGE3.setAttribute("class", "button")
-  SELECTIONPAGE4.setAttribute("class", "button is-warning is-selected")
-  homePageSelection(currentCategorie, currentpage)
+  currentCategorie = 4;
+  PAGE1.click();
+  SELECTIONPAGE1.setAttribute("class", "button");
+  SELECTIONPAGE2.setAttribute("class", "button");
+  SELECTIONPAGE3.setAttribute("class", "button");
+  SELECTIONPAGE4.setAttribute("class", "button is-warning is-selected");
+  homePageSelection(currentCategorie, currentpage);
 });
 
 SEARCHBUTTON.addEventListener("click", async () => {
   currentInput = document.getElementById("searchInput").value;
   if (currentInput != "") {
-    currentCategorie = 5
-    PAGE1.click()
-    homePageSelection(currentCategorie, currentpage)
-    SELECTIONPAGE1.setAttribute("class", "button")
-    SELECTIONPAGE2.setAttribute("class", "button")
-    SELECTIONPAGE3.setAttribute("class", "button")
-    SELECTIONPAGE4.setAttribute("class", "button")
+    currentCategorie = 5;
+    PAGE1.click();
+    homePageSelection(currentCategorie, currentpage);
+    SELECTIONPAGE1.setAttribute("class", "button");
+    SELECTIONPAGE2.setAttribute("class", "button");
+    SELECTIONPAGE3.setAttribute("class", "button");
+    SELECTIONPAGE4.setAttribute("class", "button");
   }
-})
-
-
+});
