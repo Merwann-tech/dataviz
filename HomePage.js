@@ -224,7 +224,7 @@ async function urlBackdrop(backdrop_path) {
 
 async function infoFilm(id) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?language=fr-FR`,
+    `https://dataviz-backend-aizu.onrender.com/movies/${id}`,
     options
   );
   const FILM = await RESPONSE.json();
@@ -233,7 +233,7 @@ async function infoFilm(id) {
 
 async function trendingMovies(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/trending/movie/day?language=fr-FR&page=${page}`,
+    `https://dataviz-backend-aizu.onrender.com/trending/${page}`,
     options
   );
   const FILMS = await RESPONSE.json();
@@ -242,7 +242,7 @@ async function trendingMovies(page) {
 
 async function PopularMovies(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/popular?language=fr-FR&page=${page}`,
+    `https://dataviz-backend-aizu.onrender.com/popular/${page}`,
     options
   );
   const FILMS = await RESPONSE.json();
@@ -251,7 +251,7 @@ async function PopularMovies(page) {
 
 async function topRated(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/top_rated?language=fr-FR&page=${page}`,
+    `https://dataviz-backend-aizu.onrender.com/top_rated/${page}`,
     options
   );
   const FILMS = await RESPONSE.json();
@@ -259,7 +259,7 @@ async function topRated(page) {
 }
 async function nowPlaying(page) {
   const RESPONSE = await fetch(
-    `https://api.themoviedb.org/3/movie/now_playing?language=fr-FR&page=${page}`,
+    `https://dataviz-backend-aizu.onrender.com/now_playing/${page}`,
     options
   );
   const FILMS = await RESPONSE.json();
@@ -414,4 +414,5 @@ searchBtn.addEventListener("click", async () => {
     SELECTIONPAGE4.setAttribute("class", "button")
   }
 })
+
 
