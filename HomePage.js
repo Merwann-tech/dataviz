@@ -19,8 +19,6 @@ const SEARCHBUTTON = document.getElementById("searchBtn");
 const TRANSITION_DURATION = 500;
 const SLIDE_INTERVAL = 10000 + TRANSITION_DURATION * 2;
 //******************************************************************************************************************************************************* */
-
-let backupBody = BODY.innerHTML;
 let currentpage = 1;
 let currentCategorie = 1;
 let totalPages = 100;
@@ -74,7 +72,7 @@ async function showHomePage(filmData) {
   }
 }
 //******************************************************************************************************************************************************* */
-//Affichage d'un slider avec affiche, détail qui fade out toutes les 20 secondes
+//Affichage d'un slider avec affiche, détail qui fade out toutes les 10 secondes
 async function showHomeHeader(filmData) {
   const oldHeader = document.querySelector(".header-image");
 
@@ -162,6 +160,7 @@ async function headerSlide() {
   }, SLIDE_INTERVAL);
 }
 //******************************************************************************************************************************************************* */
+//Affiche le détail du film quand on clique sur la carte entière du film  
 async function detailFilm(IdFilm) {
   PAGE.style.display = "none";
 
@@ -317,13 +316,15 @@ async function homePageSelection(categorie, page) {
     showHomePage(await search(page, currentInput));
   }
 }
-//******************************************************************************************************************************************************* */
-//Appel des fonctions
+//******************************************************Appel des fonctions************************************************************************************************* */
+//Charge la page une première fois
+
 homePageSelection(currentCategorie, currentpage);
 
+//Charge le header une première fois
 headerSlide();
 //******************************************************************************************************************************************************* */
-//Pagination de la page
+//Tout les addEventListener
 
 function showDetail(event) {
   detailFilm(event.target.id);
