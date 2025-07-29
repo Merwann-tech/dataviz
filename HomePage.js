@@ -11,7 +11,6 @@ const SELECTIONPAGE2 = document.getElementById("selectionPage2");
 const SELECTIONPAGE3 = document.getElementById("selectionPage3");
 const SELECTIONPAGE4 = document.getElementById("selectionPage4");
 const PAGE = document.getElementById("Page");
-const BODY = document.getElementById("body");
 const BUTTONHOME = document.getElementById("btnHome");
 const DETAILDIV = document.getElementById("detailDiv");
 const SEARCHBUTTON = document.getElementById("searchBtn");
@@ -25,7 +24,7 @@ let totalPages = 100;
 let slide = 0;
 let headerInterval = null;
 let currentInput = ""
-import { updateChartwithGenre } from "./graph";
+import { updateChartwithGenre } from "./graph.js";
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
@@ -303,7 +302,6 @@ async function search(page, input) {
 //******************************************************************************************************************************************************* */
 //Changement de catégorie dans la navbar
 async function homePageSelection(categorie, page) {
-  console.log(categorie);
   if (categorie == 1) {
     showHomePage(await trendingMovies(page));
   } else if (categorie == 2) {
