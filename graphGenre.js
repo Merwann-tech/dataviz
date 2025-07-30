@@ -1,9 +1,7 @@
-// Valeurs par défaut pour faire le premier appel de la fonction
-let categoryDisplayedDefault = 1 // correspond à la catégorie trending donc celle de la page d'accueil
-let pageDefault = 1 // valeur par défaut, on va la changer à l'avenir
-let genreChart //
+let categoryDisplayedDefault = 1
+let pageDefault = 1
+let genreChart
 
-//Contient notre tableau de référence qui associe l'id avec les genres
 const genreIdToIndex = {
   28: 0, // Action
   12: 1, // Aventure
@@ -25,7 +23,6 @@ const genreIdToIndex = {
   10752: 17, // Guerre
   37: 18 // Western
 }
-
 
 //***************************************************************************GRAPHE 2********************************************************************
 
@@ -64,9 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
   updateChartwithGenre(categoryDisplayedDefault, pageDefault)
 })
 
-
-//méthodo qui permet de récupérer les informations précises de la page
-//penser à inclure une function qui permet de vérifier la catégorie pour changer la catégorie à afficher
 async function getPageGenre(categoryToShow, pageToShow){
     
   const response = await fetch(`https://dataviz-backend-aizu.onrender.com/${categoryToShow}/${pageToShow}`)
@@ -83,17 +77,14 @@ function chosenCategory(category){
   if( category == 4 ) return "now_playing"
 }
 
-
-// Méthodo qui va permettre de créer le tableau de données de la page
 // récupère les infos de ANSWER.results et va les trier dans un tableau de genre ( les genres ont des id )
-// récuperer les id et créer un tableau qui va prendre les id dans un ordre précis ( voir label de DATAGRAPH2)
 async function sortDataGenre(dataPage){
-  const genreCounts = new Array(19).fill(0) // on créer un tableau de 19 elements et on les remplit de 0 pour éviter qu'ils soient indéfinis
+  const genreCounts = new Array(19).fill(0)
 
-  for(const movie of dataPage){ // pour chaque film de dataPage ( en l'occurence la data de la page)
-    for(const genreId of movie.genre_ids){ // pour chaque genre écrit dans chaque film ( il peut y en avoir plusieurs )
-      const index = genreIdToIndex[genreId] // regarde chaque élément du tableau de genre
-      if(index !== undefined){ // sécurité --> backdrop vide, on ne sait jamais
+  for(const movie of dataPage){ 
+    for(const genreId of movie.genre_ids){
+      const index = genreIdToIndex[genreId]
+      if(index !== undefined){ // sécurité
         genreCounts[index]++
       }
     }
@@ -102,13 +93,11 @@ async function sortDataGenre(dataPage){
   return genreCounts
 }
 
-// la método qui va update le graphe quand on va changer de page
+// Update le graphe quand on va changer de page
 export async function updateChartwithGenre(categoryToGraph, pageToGraph){
-
   const categoryName = chosenCategory(categoryToGraph)
-  const arrayInfo = await getPageGenre(categoryName, pageToGraph) // des informations qu'on retrouve dans les addEventListener présent dans les lignes d'avant ( a voir si il faut pas lancer la fonction depuis l'autre fichier)
-  
-  // permet de transférer les données de notre array dans notre chart
+  const arrayInfo = await getPageGenre(categoryName, pageToGraph)
+
   for (let i = 0; i < 19; i++) {
     genreChart.data.datasets[0].data[i] = arrayInfo[i]
   }
