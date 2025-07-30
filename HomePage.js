@@ -1,38 +1,39 @@
+import { updateChartwithGenre } from "./graphGenre.js";
 //******************************************************************************************************************************************************* */
-const HEADER = document.getElementById("headerMovie");
-const HOMEPAGE = document.getElementById("homePage");
-const PREVIOUSBUTTON = document.getElementById("previousButton"); // pour aller à la page d'avant
-const NEXTBUTTON = document.getElementById("nextButton"); // pour aller à la page d'après
-const CURRENTPAGE = document.getElementById("currentPage");
-const PAGE1 = document.getElementById("Page1");
-const MAXPAGE = document.getElementById("maxPage");
-const SELECTIONPAGE1 = document.getElementById("selectionPage1");
-const SELECTIONPAGE2 = document.getElementById("selectionPage2");
-const SELECTIONPAGE3 = document.getElementById("selectionPage3");
-const SELECTIONPAGE4 = document.getElementById("selectionPage4");
-const PAGE = document.getElementById("Page");
-const BUTTONHOME = document.getElementById("btnHome");
-const DETAILDIV = document.getElementById("detailDiv");
-const SEARCHBUTTON = document.getElementById("searchBtn");
+const header = document.getElementById("headerMovie");
+const homePage = document.getElementById("homePage");
+const previousButton = document.getElementById("previousButton"); // pour aller à la page d'avant
+const nextButton = document.getElementById("nextButton"); // pour aller à la page d'après
+const currentPage = document.getElementById("currentPage");
+const page1 = document.getElementById("Page1");
+const maxPage = document.getElementById("maxPage");
+const selectionPage1 = document.getElementById("selectionPage1");
+const selectionPage2 = document.getElementById("selectionPage2");
+const selectionPage3 = document.getElementById("selectionPage3");
+const selectionPage4 = document.getElementById("selectionPage4");
+const page = document.getElementById("Page");
+const buttonHome = document.getElementById("btnHome");
+const detailDiv = document.getElementById("detailDiv");
+const searchButton = document.getElementById("searchBtn");
 
-const TRANSITION_DURATION = 500;
-const SLIDE_INTERVAL = 10000 + TRANSITION_DURATION * 2;
+const transitionDuration = 500;
+const slideInterval = 10000 + transitionDuration * 2;
 //******************************************************************************************************************************************************* */
 let currentpage = 1;
 let currentCategorie = 1;
 let totalPages = 100;
 let slide = 0;
 let currentInput = ""
-import { updateChartwithGenre } from "./graphGenre.js";
+
 //******************************************************************************************************************************************************* */
 //Affichage du tableau des films, avec image et titre avec le frameWork Bulma
 async function showHomePage(filmData) {
-  HOMEPAGE.innerHTML = "";
+  homePage.innerHTML = "";
   totalPages = filmData.total_pages;
   if (totalPages > 500) {
-    MAXPAGE.innerText = 500
+    maxPage.innerText = 500
   } else {
-    MAXPAGE.innerText = totalPages;
+    maxPage.innerText = totalPages;
   }
   for (let i = 0; i < filmData.results.length; i++) {
     if (filmData.results[i].poster_path != null) {
@@ -69,7 +70,7 @@ async function showHomePage(filmData) {
       container.appendChild(cardImage);
       container.appendChild(cardHeader);
 
-      HOMEPAGE.appendChild(container);
+      homePage.appendChild(container);
     }
   }
 }
@@ -124,10 +125,10 @@ async function showHomeHeader(filmData) {
     // Supprime la classe visible pour déclencher le fade-out
     oldHeader.classList.remove("visible");
 
-    // ⏳ Attends que le fade-out soit fini
-    await new Promise((resolve) => setTimeout(resolve, TRANSITION_DURATION));
+    //Attends que le fade-out soit fini
+    await new Promise((resolve) => setTimeout(resolve, transitionDuration));
 
-    // Ensuite, on peut le supprimer du DOM
+    //Ensuite, on peut le supprimer du DOM
     oldHeader.remove();
   }
 
@@ -136,12 +137,12 @@ async function showHomeHeader(filmData) {
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
   headerDiv.addEventListener("click", showDetail);
-  HEADER.appendChild(headerDiv);
+  header.appendChild(headerDiv);
 
   // Lancer le fade-in
   setTimeout(() => {
     headerDiv.classList.add("visible");
-  }, TRANSITION_DURATION);
+  }, transitionDuration);
 }
 //******************************************************************************************************************************************************* */
 //Fonction pour passer de slide par slide dans le header
@@ -157,12 +158,12 @@ async function headerSlide() {
       slide++;
     }
     await showHomeHeader(filmData);
-  }, SLIDE_INTERVAL);
+  }, slideInterval);
 }
 //******************************************************************************************************************************************************* */
 //Affiche le détail du film quand on clique sur la carte entière du film  
 async function detailFilm(IdFilm) {
-  PAGE.style.display = "none";
+  page.style.display = "none";
 
   const headerDiv = document.createElement("div");
   headerDiv.className = "detail";
@@ -223,16 +224,16 @@ async function detailFilm(IdFilm) {
   button.className = "button is-link is-dark ";
 
   button.addEventListener("click", () => {
-    DETAILDIV.innerHTML = "";
-    PAGE.style.display = "inline";
+    detailDiv.innerHTML = "";
+    page.style.display = "inline";
   });
 
   //Le tout rentré dans le HTML
   DivButton.appendChild(button);
   headerDiv.appendChild(headerImg);
   headerDiv.appendChild(headerParagraph);
-  DETAILDIV.appendChild(headerDiv);
-  DETAILDIV.appendChild(DivButton);
+  detailDiv.appendChild(headerDiv);
+  detailDiv.appendChild(DivButton);
 }
 
 //******************************************************************************************************************************************************* */
@@ -328,100 +329,100 @@ function showDetail(event) {
   detailFilm(event.target.id);
 }
 
-BUTTONHOME.addEventListener("click", async () => {
-  DETAILDIV.innerHTML = "";
-  PAGE.style.display = "inline";
+buttonHome.addEventListener("click", async () => {
+  detailDiv.innerHTML = "";
+  page.style.display = "inline";
   currentCategorie = 1;
-  PAGE1.click();
-  SELECTIONPAGE1.setAttribute("class", "button is-success is-selected");
-  SELECTIONPAGE2.setAttribute("class", "button");
-  SELECTIONPAGE3.setAttribute("class", "button");
-  SELECTIONPAGE4.setAttribute("class", "button");
+  page1.click();
+  selectionPage1.setAttribute("class", "button is-success is-selected");
+  selectionPage2.setAttribute("class", "button");
+  selectionPage3.setAttribute("class", "button");
+  selectionPage4.setAttribute("class", "button");
   homePageSelection(currentCategorie, currentpage);
 });
 
-NEXTBUTTON.addEventListener("click", async () => {
+nextButton.addEventListener("click", async () => {
   if (currentpage < totalPages) {
     currentpage++;
     homePageSelection(currentCategorie, currentpage);
-    CURRENTPAGE.innerText = currentpage;
+    currentPage.innerText = currentpage;
   } else {
     currentpage = 1;
     homePageSelection(currentCategorie, currentpage);
-    CURRENTPAGE.innerText = currentpage;
+    currentPage.innerText = currentpage;
   }
 });
 
-PREVIOUSBUTTON.addEventListener("click", async () => {
+previousButton.addEventListener("click", async () => {
   if (currentpage > 1) {
     currentpage--;
     homePageSelection(currentCategorie, currentpage);
-    CURRENTPAGE.innerText = currentpage;
+    currentPage.innerText = currentpage;
   } else {
     currentpage = totalPages;
     homePageSelection(currentCategorie, currentpage);
-    CURRENTPAGE.innerText = currentpage;
+    currentPage.innerText = currentpage;
   }
 });
 
-PAGE1.addEventListener("click", async () => {
+page1.addEventListener("click", async () => {
   currentpage = 1;
   homePageSelection(currentCategorie, currentpage);
-  CURRENTPAGE.innerText = currentpage;
+  currentPage.innerText = currentpage;
 });
 
-MAXPAGE.addEventListener("click", async () => {
+maxPage.addEventListener("click", async () => {
   currentpage = totalPages;
   homePageSelection(currentCategorie, currentpage);
-  CURRENTPAGE.innerText = currentpage;
+  currentPage.innerText = currentpage;
 });
 
-SELECTIONPAGE1.addEventListener("click", async () => {
+selectionPage1.addEventListener("click", async () => {
   currentCategorie = 1
-  PAGE1.click()
-  SELECTIONPAGE1.setAttribute("class", "button is-success is-selected")
-  SELECTIONPAGE2.setAttribute("class", "button")
-  SELECTIONPAGE3.setAttribute("class", "button")
-  SELECTIONPAGE4.setAttribute("class", "button")
+  page1.click()
+  selectionPage1.setAttribute("class", "button is-success is-selected")
+  selectionPage2.setAttribute("class", "button")
+  selectionPage3.setAttribute("class", "button")
+  selectionPage4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
 });
-SELECTIONPAGE2.addEventListener("click", async () => {
+selectionPage2.addEventListener("click", async () => {
   currentCategorie = 2
-  PAGE1.click()
-  SELECTIONPAGE1.setAttribute("class", "button")
-  SELECTIONPAGE2.setAttribute("class", "button is-link is-selected")
-  SELECTIONPAGE3.setAttribute("class", "button")
-  SELECTIONPAGE4.setAttribute("class", "button")
+  page1.click()
+  selectionPage1.setAttribute("class", "button")
+  selectionPage2.setAttribute("class", "button is-link is-selected")
+  selectionPage3.setAttribute("class", "button")
+  selectionPage4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
 });
-SELECTIONPAGE3.addEventListener("click", async () => {
+selectionPage3.addEventListener("click", async () => {
   currentCategorie = 3
-  PAGE1.click()
-  SELECTIONPAGE1.setAttribute("class", "button")
-  SELECTIONPAGE2.setAttribute("class", "button")
-  SELECTIONPAGE3.setAttribute("class", "button is-danger is-selected")
-  SELECTIONPAGE4.setAttribute("class", "button")
+  page1.click()
+  selectionPage1.setAttribute("class", "button")
+  selectionPage2.setAttribute("class", "button")
+  selectionPage3.setAttribute("class", "button is-danger is-selected")
+  selectionPage4.setAttribute("class", "button")
   homePageSelection(currentCategorie, currentpage)
 });
-SELECTIONPAGE4.addEventListener("click", async () => {
+selectionPage4.addEventListener("click", async () => {
   currentCategorie = 4
-  PAGE1.click()
-  SELECTIONPAGE1.setAttribute("class", "button")
-  SELECTIONPAGE2.setAttribute("class", "button")
-  SELECTIONPAGE3.setAttribute("class", "button")
-  SELECTIONPAGE4.setAttribute("class", "button is-warning is-selected")
+  page1.click()
+  selectionPage1.setAttribute("class", "button")
+  selectionPage2.setAttribute("class", "button")
+  selectionPage3.setAttribute("class", "button")
+  selectionPage4.setAttribute("class", "button is-warning is-selected")
   homePageSelection(currentCategorie, currentpage)
 });
 
-SEARCHBUTTON.addEventListener("click", async () => {
+searchButton.addEventListener("click", async () => {
   currentInput = document.getElementById("searchInput").value;
   if (currentInput != "") {
     currentCategorie = 5
-    PAGE1.click()
+    page1.click()
     homePageSelection(currentCategorie, currentpage)
-    SELECTIONPAGE1.setAttribute("class", "button")
-    SELECTIONPAGE2.setAttribute("class", "button")
-    SELECTIONPAGE3.setAttribute("class", "button")
-    SELECTIONPAGE4.setAttribute("class", "button")
+    selectionPage1.setAttribute("class", "button")
+    selectionPage2.setAttribute("class", "button")
+    selectionPage3.setAttribute("class", "button")
+    selectionPage4.setAttribute("class", "button")
   }
 });
