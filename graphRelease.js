@@ -5,6 +5,7 @@ let yearToShow = 2014 // on l'a met en variable globale car on doit pouvoir la m
 
 const CURRENTYEAR = new Date() // on récupère la date système
 const ACTUALYEAR = CURRENTYEAR.getFullYear() // on récupère l'année de la date système
+const maxMonthDay = ["31","28","31","30","31","30","31","31","30","31","30","31"]
 //***************************************************************************GRAPHE 1********************************************************************
 
 //Premier graphe : Films sortis par mois et par année
@@ -62,16 +63,16 @@ async function dataFilm(yearToShow) {
 
   const monthCounts = new Array(12).fill(0) // on créer un nouveau tableau qu'on va remplir et qu'on va renvoyer pour qu'on les utilisent dans le graph
 
-  for (let i = 1; i <= 50; i++) { // nombre de page a analyser
-    try {
-      const response = await fetch(`https://dataviz-backend-aizu.onrender.com/graph/:year/:month/:maxDay`)
-      const data = await response.json()
+  for (let month = 1; month <= 12; month++) { // nombre de page a analyser
 
-      if (data.results && Array.isArray(data.results)) { // on vérifie bien qu'on récupérer les informations de la page en cours et qu'on a un tableau
-        sortData(data.results, yearToShow, monthCounts) // on appelle une fonction qui va remplir le tableau en fonction du résultat
+    try {
+      const response = await fetch(`https://dataviz-backend-aizu.onrender.com/graph/${yearToShow}/${month}/${maxMonthDay[month - 1]}`)
+      const data = await response.json()
+      
+      releaseChart.data.datasets[0].data[month - 1] = data.total_results
+        
       }
 
-    } 
     
     catch (error) {
       console.error(`Erreur sur la page ${i} :`, error) // on renvoi une erreur dans la console si jamais on a pas réussi à réc
@@ -82,29 +83,8 @@ async function dataFilm(yearToShow) {
   return monthCounts // on retourne notre tableau fini
 }
 
-function sortData(results, yearToShow, monthCounts) {
-  for (let film of results) { // on récupère la page en cours et on l'analyse ( d'ou la notion de vérifier si c'est un tableau )
-    if (!film.release_date == ""){ // on sait jamais --> on a des backdrops vide donc bon, c'est plus sur
-
-        let SplitedDate = film.release_date.split("-") // variable tampon pour séparer le string
-        
-        const year = Number(SplitedDate[0]) // c'est un string a la base
-        const month = Number(SplitedDate[1])  // c'est un string a la base
-
-        if (year === yearToShow && month >= 1 && month <= 12) {
-        monthCounts[month - 1]++
-        }
-    }
-  }
-}
-
 async function updateChartWithRealData() {
-  const monthData = await dataFilm(yearToShow)
-
-  // permet de transférer les données de notre array dans notre chart
-  for (let i = 0; i < 12; i++) {
-    releaseChart.data.datasets[0].data[i] = monthData[i]
-  }
+  await dataFilm(yearToShow)
   releaseChart.options.plugins.title.text = `Sorties de films en ${yearToShow}`
   releaseChart.update()
 }
