@@ -30,3 +30,8 @@ Le projet inclut également une visualisation graphique des données pour une me
 - 🖼️ **Fiches détaillées** des films (affiche, durée, pays, genres, synopsis...)
 - 📊 **Graphique de données** pour l'analyse visuelle des films affichés
 - 🔁 **Pagination fluide** et responsive
+
+## Comment utiliser le site
+
+- git clone
+- lancer live server sur la page index.html
